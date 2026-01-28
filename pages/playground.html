@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式演示 - Redis 学习教程</title>
+    <meta name="description" content="Redis 命令交互式演示">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">
+                <i>🗃️</i> Redis 学习教程
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="tutorial.html">基础教程</a></li>
+                <li><a href="commands.html">命令参考</a></li>
+                <li><a href="playground.html" class="active">交互演示</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" id="playgroundPage">
+        <h1 style="text-align: center; margin-bottom: 2rem;">
+            💻 Redis CLI 交互式演示
+        </h1>
+
+        <div class="playground-container">
+            <div class="terminal">
+                <div class="terminal-header">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <span class="terminal-title">🖥️ Redis CLI</span>
+                        <span class="terminal-badge" id="dbBadge">DB 0</span>
+                    </div>
+                    <button class="terminal-clear" id="clearBtn">
+                        🗑️ 清空
+                    </button>
+                </div>
+
+                <div class="terminal-output" id="terminalOutput">
+                    <!-- 命令输出将通过 JavaScript 动态生成 -->
+                </div>
+
+                <div class="terminal-input">
+                    <input
+                        type="text"
+                        id="terminalInput"
+                        placeholder="输入 Redis 命令..."
+                        autocomplete="off"
+                    />
+                </div>
+            </div>
+
+            <div class="quick-commands">
+                <h4>⚡ 快速命令：</h4>
+                <div class="quick-commands-grid">
+                    <button class="quick-command-btn">SET name "Redis"</button>
+                    <button class="quick-command-btn">GET name</button>
+                    <button class="quick-command-btn">INCR counter</button>
+                    <button class="quick-command-btn">KEYS *</button>
+                    <button class="quick-command-btn">DBSIZE</button>
+                    <button class="quick-command-btn">HELP</button>
+                    <button class="quick-command-btn">JSON.SET user $ '{"name":"Alice","age":30}'</button>
+                    <button class="quick-command-btn">JSON.GET user $</button>
+                    <button class="quick-command-btn">JSON.GET user $.name</button>
+                    <button class="quick-command-btn">JSON.OBJLEN user $</button>
+                </div>
+            </div>
+
+            <div class="content-section" style="margin-top: 2rem;">
+                <h3>ℹ️ 说明</h3>
+                <p>
+                    这是一个 Redis 命令的模拟器，所有数据都存储在浏览器内存中。
+                    刷新页面会清空所有数据。支持的命令包括基本的字符串操作、哈希、列表、集合和有序集合操作。
+                </p>
+                <p>
+                    点击上面的快速命令按钮可以快速输入常用命令，或者直接在终端中输入任何 Redis 命令进行测试。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

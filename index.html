@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redis 学习教程 - 从入门到精通</title>
+    <meta name="description" content="全面的 Redis 学习资源，包含基础教程、命令参考和交互式演示">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="navbar-brand">
+                <i>🗃️</i> Redis 学习教程
+            </a>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">首页</a></li>
+                <li><a href="pages/tutorial.html">基础教程</a></li>
+                <li><a href="pages/commands.html">命令参考</a></li>
+                <li><a href="pages/playground.html">交互演示</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero fade-in">
+            <h1>Redis 学习教程</h1>
+            <p>从入门到精通，全面掌握 Redis 内存数据库的核心概念、数据结构和实践技巧</p>
+            <div class="hero-buttons">
+                <a href="pages/tutorial.html" class="btn btn-primary">
+                    📚 开始学习
+                </a>
+                <a href="pages/playground.html" class="btn btn-outline">
+                    💻 在线演示
+                </a>
+            </div>
+        </div>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">📖</div>
+                <h3>基础教程</h3>
+                <p>系统化学习 Redis 基础知识，从安装配置到核心概念，循序渐进</p>
+                <a href="pages/tutorial.html" class="btn btn-primary">查看教程 →</a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📋</div>
+                <h3>命令参考</h3>
+                <p>完整的 Redis 命令参考手册，包含详细说明、参数和示例代码</p>
+                <a href="pages/commands.html" class="btn btn-primary">查看命令 →</a>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎮</div>
+                <h3>交互演示</h3>
+                <p>在线体验 Redis 命令操作，实时查看结果，加深理解</p>
+                <a href="pages/playground.html" class="btn btn-primary">开始体验 →</a>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>为什么选择 Redis?</h2>
+            <ul>
+                <li><strong>极高性能：</strong>读写速度可达 10万次/秒，响应时间在毫秒级</li>
+                <li><strong>丰富数据类型：</strong>支持字符串、哈希、列表、集合、有序集合等多种数据结构</li>
+                <li><strong>原子操作：</strong>所有操作都是原子的，保证数据一致性</li>
+                <li><strong>持久化支持：</strong>RDB 和 AOF 两种持久化方式，数据安全有保障</li>
+                <li><strong>主从复制：</strong>支持数据复制，提高可用性和读取性能</li>
+                <li><strong>高可用：</strong>支持哨兵和集群模式，实现高可用部署</li>
+            </ul>
+        </section>
+
+        <section class="content-section">
+            <h2>应用场景</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4>⚡ 缓存系统</h4>
+                    <p>作为数据库查询结果的缓存，减轻数据库压力，提升响应速度</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4>👤 会话存储</h4>
+                    <p>存储用户会话信息，支持分布式应用，实现无状态架构</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4>🏆 排行榜</h4>
+                    <p>利用有序集合实现实时排行榜功能，支持高效的范围查询</p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4>💬 消息队列</h4>
+                    <p>使用列表和发布/订阅实现消息队列，支持异步处理</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-section">
+            <h2>学习路径</h2>
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 4px; border-left: 4px solid #667eea;">
+                <h3>🎯 第一步：入门基础</h3>
+                <p>了解 Redis 是什么，为什么使用它，以及基本的数据结构</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 4px; border-left: 4px solid #27ae60; margin-top: 1rem;">
+                <h3>📝 第二步：命令掌握</h3>
+                <p>学习常用命令，掌握数据操作技巧，理解 Redis 的核心功能</p>
+            </div>
+            <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 4px; border-left: 4px solid #f39c12; margin-top: 1rem;">
+                <h3>🎮 第三步：实战应用</h3>
+                <p>通过交互式演示和实际案例，将知识转化为实践能力</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
