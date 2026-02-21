@@ -36,14 +36,18 @@
             
             <!-- RediSearch -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">🔍</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>RediSearch</h3>
                         <p class="module-lead">强大的全文搜索引擎，支持二级索引、模糊搜索、向量相似度搜索等。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -86,14 +90,18 @@ redis-server --loadmodule /path/to/redisearch.so
 
             <!-- RedisJSON -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">📋</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>RedisJSON</h3>
                         <p class="module-lead">原生 JSON 数据类型支持，允许在 Redis 中存储、查询和操作 JSON 文档。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -140,14 +148,18 @@ redis-server --loadmodule /path/to/rejson.so
 
             <!-- RedisTimeSeries -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">📈</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>RedisTimeSeries</h3>
                         <p class="module-lead">时间序列数据存储和查询模块，适用于 IoT、监控、金融等场景。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -193,14 +205,18 @@ redis-server --loadmodule /path/to/redistimeseries.so
 
             <!-- RedisGraph -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">🕸️</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>RedisGraph</h3>
                         <p class="module-lead">图数据库模块，使用 Cypher 查询语言，支持关系数据的存储和查询。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -243,14 +259,18 @@ redis-server --loadmodule /path/to/redisgraph.so
 
             <!-- RedisBloom -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">🌺</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>RedisBloom</h3>
                         <p class="module-lead">概率数据结构集合，包括布隆过滤器、计数布隆过滤器、Cuckoo 过滤器等。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -300,14 +320,18 @@ redis-server --loadmodule /path/to/redisbloom.so
 
             <!-- RedisCell -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">⚡</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>RedisCell</h3>
                         <p class="module-lead">分布式限流模块，实现令牌桶算法，用于 API 限流和速率控制。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -353,14 +377,18 @@ redis-server --loadmodule target/release/libredis_cell.so
 
             <!-- RedisAI -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">🤖</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>RedisAI</h3>
                         <p class="module-lead">深度学习推理模块，支持在 Redis 中运行 AI 模型，实现实时推理。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -409,14 +437,18 @@ make
 
             <!-- RedisGears -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">⚙️</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>RedisGears</h3>
                         <p class="module-lead">无服务器计算框架，支持在 Redis 上运行自定义逻辑和数据处理。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -465,14 +497,18 @@ redis-server --loadmodule /path/to/redisgears.so \
 
             <!-- redis-ml -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">🧠</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>redis-ml</h3>
                         <p class="module-lead">机器学习模块，提供经典 ML 算法的 Redis 实现，支持在 Redis 中进行模型训练和预测。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -663,14 +699,18 @@ docker run -p 6379:6379 redisai/redis-ml:latest
 
             <!-- redis-count-min-sketch -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">📊</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>redis-count-min-sketch</h3>
                         <p class="module-lead">计数最小草图模块，用于高效统计频率。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -715,14 +755,18 @@ docker run -p 6379:6379 redis/redis-stack-server:latest
 
             <!-- redis-hyperloglog -->
             <div class="module-item">
-                <div class="module-header-full">
+                <div class="module-header-full module-collapsible">
                     <div class="module-icon-large">🔢</div>
-                    <div>
+                    <div class="module-header-text">
                         <h3>redis-hyperloglog</h3>
                         <p class="module-lead">HyperLogLog 基数计数模块，用于唯一值统计。</p>
                     </div>
+                    <div class="module-toggle">
+                        <span class="toggle-icon">▼</span>
+                        <span class="toggle-text">展开</span>
+                    </div>
                 </div>
-                <div class="module-details">
+                <div class="module-details module-content">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
@@ -1419,6 +1463,17 @@ RedisModule_FreeThreadSafeContext(safeCtx);
             display: flex;
             align-items: center;
             gap: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .module-header-full:hover {
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        }
+
+        .module-header-text {
+            flex: 1;
         }
 
         .module-icon-large {
@@ -1437,6 +1492,49 @@ RedisModule_FreeThreadSafeContext(safeCtx);
             margin: 0;
             font-size: 1.1rem;
             line-height: 1.6;
+        }
+
+        /* 折叠按钮样式 */
+        .module-toggle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            color: white;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            transition: transform 0.3s ease;
+            min-width: 50px;
+        }
+
+        .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .module-item.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .module-item.collapsed .toggle-text::after {
+            content: '展开';
+        }
+
+        .module-item:not(.collapsed) .toggle-text::after {
+            content: '收起';
+        }
+
+        /* 内容区域折叠动画 */
+        .module-content {
+            max-height: 5000px;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .module-item.collapsed .module-content {
+            max-height: 0;
+            opacity: 0;
         }
 
         /* 模块详情区域 - 垂直布局 */
@@ -1591,6 +1689,10 @@ RedisModule_FreeThreadSafeContext(safeCtx);
                 padding: 1.5rem;
             }
 
+            .module-header-text {
+                width: 100%;
+            }
+
             .module-icon-large {
                 font-size: 3rem;
             }
@@ -1600,6 +1702,16 @@ RedisModule_FreeThreadSafeContext(safeCtx);
             }
 
             .module-lead {
+                font-size: 1rem;
+            }
+
+            .module-toggle {
+                flex-direction: row;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+
+            .toggle-icon {
                 font-size: 1rem;
             }
 
@@ -1621,6 +1733,28 @@ RedisModule_FreeThreadSafeContext(safeCtx);
             }
         }
     </style>
+
+    <script>
+        // 模块折叠功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const collapsibleHeaders = document.querySelectorAll('.module-collapsible');
+            
+            collapsibleHeaders.forEach(header => {
+                header.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const moduleItem = this.closest('.module-item');
+                    moduleItem.classList.toggle('collapsed');
+                });
+            });
+            
+            // 初始状态：全部展开（可选：改为全部收起）
+            // 如果要默认全部收起，取消下面注释
+            // collapsibleHeaders.forEach(header => {
+            //     const moduleItem = header.closest('.module-item');
+            //     moduleItem.classList.add('collapsed');
+            // });
+        });
+    </script>
 
     <script src="../js/script.js"></script>
 </body>
