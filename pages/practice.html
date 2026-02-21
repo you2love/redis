@@ -1178,6 +1178,718 @@ else:
                 </div>
             </div>
         </div>
+
+        <!-- 应用场景 7: 购物车 -->
+        <div class="practice-item">
+            <div class="practice-header practice-collapsible">
+                <div class="practice-icon">🛒</div>
+                <div class="practice-header-text">
+                    <h3>场景七：购物车</h3>
+                    <p class="practice-lead">使用 Hash 结构实现高效的购物车功能。</p>
+                </div>
+                <div class="practice-toggle">
+                    <span class="toggle-icon">▼</span>
+                    <span class="toggle-text">展开</span>
+                </div>
+            </div>
+            <div class="practice-content module-content">
+                <div class="practice-section">
+                    <h4>📋 场景描述</h4>
+                    <p>电商应用中，购物车需要支持添加商品、修改数量、删除商品、计算总价等操作，且需要快速响应。</p>
+                </div>
+
+                <div class="practice-section">
+                    <h4>🏗️ 实现方案</h4>
+                    <div class="code-block">
+# 使用 Hash 存储购物车
+# key: cart:{user_id}
+# field: product_id
+# value: 购买数量
+
+# 示例数据
+cart:user:1001 = {
+    "product:101": "2",    # 商品 101，数量 2
+    "product:102": "1",    # 商品 102，数量 1
+    "product:103": "3"     # 商品 103，数量 3
+}
+
+# 商品详情存储在另一个 Hash
+product:101 = {
+    "name": "iPhone 15",
+    "price": "7999",
+    "stock": "100"
+}
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>🔧 核心命令</h4>
+                    <div class="command-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>命令</th>
+                                    <th>说明</th>
+                                    <th>示例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>HSET key field value</code></td>
+                                    <td>添加/更新商品</td>
+                                    <td><code>HSET cart:1001 product:101 2</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>HGET key field</code></td>
+                                    <td>获取商品数量</td>
+                                    <td><code>HGET cart:1001 product:101</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>HGETALL key</code></td>
+                                    <td>获取购物车全部商品</td>
+                                    <td><code>HGETALL cart:1001</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>HINCRBY key field increment</code></td>
+                                    <td>增加商品数量</td>
+                                    <td><code>HINCRBY cart:1001 product:101 1</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>HDEL key field</code></td>
+                                    <td>删除商品</td>
+                                    <td><code>HDEL cart:1001 product:101</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>HLEN key</code></td>
+                                    <td>获取商品种类数</td>
+                                    <td><code>HLEN cart:1001</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>EXPIRE key seconds</code></td>
+                                    <td>设置过期时间</td>
+                                    <td><code>EXPIRE cart:1001 2592000</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>💻 代码示例</h4>
+                    <div class="code-block">
+import redis
+import json
+
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+class ShoppingCart:
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.cart_key = f"cart:{user_id}"
+        self.product_prefix = "product:"
+    
+    def add_item(self, product_id, quantity=1):
+        """添加商品到购物车"""
+        # 检查商品库存
+        stock = r.hget(f"{self.product_prefix}{product_id}", "stock")
+        if stock and int(stock) < quantity:
+            return {"success": False, "message": "库存不足"}
+        
+        # 添加到购物车（如果已存在则累加）
+        r.hincrby(self.cart_key, product_id, quantity)
+        
+        # 设置 30 天过期
+        r.expire(self.cart_key, 2592000)
+        
+        return {"success": True}
+    
+    def remove_item(self, product_id):
+        """删除商品"""
+        r.hdel(self.cart_key, product_id)
+        return {"success": True}
+    
+    def update_quantity(self, product_id, quantity):
+        """更新商品数量"""
+        if quantity <= 0:
+            return self.remove_item(product_id)
+        
+        r.hset(self.cart_key, product_id, str(quantity))
+        return {"success": True}
+    
+    def get_cart(self):
+        """获取购物车详情"""
+        cart_items = r.hgetall(self.cart_key)
+        result = []
+        total = 0
+        
+        for product_id, quantity in cart_items.items():
+            product = r.hgetall(f"{self.product_prefix}{product_id}")
+            if product:
+                price = float(product.get('price', 0))
+                subtotal = price * int(quantity)
+                total += subtotal
+                result.append({
+                    'product_id': product_id,
+                    'name': product.get('name'),
+                    'price': price,
+                    'quantity': int(quantity),
+                    'subtotal': subtotal
+                })
+        
+        return {
+            'items': result,
+            'total': total,
+            'item_count': len(result)
+        }
+    
+    def clear(self):
+        """清空购物车"""
+        r.delete(self.cart_key)
+        return {"success": True}
+
+# 使用示例
+cart = ShoppingCart("user:1001")
+cart.add_item("101", 2)  # 添加商品 101，数量 2
+cart.add_item("102", 1)  # 添加商品 102，数量 1
+cart.update_quantity("101", 3)  # 修改商品 101 数量为 3
+cart_details = cart.get_cart()  # 获取购物车详情
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>⚠️ 常见问题与解决方案</h4>
+                    
+                    <div class="problem-solution">
+                        <div class="problem">
+                            <strong>问题 1：购物车数据丢失</strong>
+                            <p>Redis 故障导致用户购物车数据丢失，影响用户体验。</p>
+                        </div>
+                        <div class="solution">
+                            <strong>解决方案：</strong>
+                            <ul>
+                                <li>开启 AOF 持久化，每秒同步</li>
+                                <li>重要用户购物车同步到数据库</li>
+                                <li>未登录用户购物车可接受丢失</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="problem-solution">
+                        <div class="problem">
+                            <strong>问题 2：库存超卖</strong>
+                            <p>多个用户同时购买，库存扣减不一致。</p>
+                        </div>
+                        <div class="solution">
+                            <strong>解决方案：</strong>
+                            <ul>
+                                <li>加入购物车时不扣库存，下单时扣减</li>
+                                <li>使用 Lua 脚本原子性检查并扣减库存</li>
+                                <li>设置库存预占机制</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用场景 8: 计数器/统计 -->
+        <div class="practice-item">
+            <div class="practice-header practice-collapsible">
+                <div class="practice-icon">📊</div>
+                <div class="practice-header-text">
+                    <h3>场景八：计数器/统计</h3>
+                    <p class="practice-lead">高性能计数器，用于点赞、浏览、下载等统计。</p>
+                </div>
+                <div class="practice-toggle">
+                    <span class="toggle-icon">▼</span>
+                    <span class="toggle-text">展开</span>
+                </div>
+            </div>
+            <div class="practice-content module-content">
+                <div class="practice-section">
+                    <h4>📋 场景描述</h4>
+                    <p>文章阅读量、视频播放量、点赞数、下载计数等场景，需要高并发写入和实时读取。</p>
+                </div>
+
+                <div class="practice-section">
+                    <h4>🏗️ 实现方案</h4>
+                    <div class="code-block">
+# 简单计数器
+article:views:12345 = 10000    # 文章 12345 的阅读量
+
+# 多维度统计
+article:stats:12345 = {
+    "views": 10000,      # 阅读
+    "likes": 500,        # 点赞
+    "comments": 120,     # 评论
+    "shares": 80         # 分享
+}
+
+# 日统计（用于趋势分析）
+article:daily:12345:2024-01-01 = {
+    "views": 1000,
+    "likes": 50
+}
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>🔧 核心命令</h4>
+                    <div class="command-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>命令</th>
+                                    <th>说明</th>
+                                    <th>示例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>INCR key</code></td>
+                                    <td>自增 1</td>
+                                    <td><code>INCR article:views:12345</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>INCRBY key increment</code></td>
+                                    <td>自增指定值</td>
+                                    <td><code>INCRBY article:views:12345 5</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>DECR key</code></td>
+                                    <td>自减 1</td>
+                                    <td><code>DECR article:likes:12345</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>HINCRBY key field increment</code></td>
+                                    <td>Hash 字段自增</td>
+                                    <td><code>HINCRBY article:stats:12345 views 1</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>GET key</code></td>
+                                    <td>获取计数值</td>
+                                    <td><code>GET article:views:12345</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>MGET key1 key2</code></td>
+                                    <td>批量获取</td>
+                                    <td><code>MGET article:views:1 article:views:2</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>💻 代码示例</h4>
+                    <div class="code-block">
+import redis
+
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+class Counter:
+    def __init__(self):
+        self.prefix = "stats"
+    
+    def increment(self, target_type, target_id, field="views", amount=1):
+        """增加计数"""
+        key = f"{self.prefix}:{target_type}:{target_id}"
+        return r.hincrby(key, field, amount)
+    
+    def decrement(self, target_type, target_id, field="views", amount=1):
+        """减少计数"""
+        key = f"{self.prefix}:{target_type}:{target_id}"
+        return r.hincrby(key, field, -amount)
+    
+    def get_count(self, target_type, target_id, field="views"):
+        """获取计数"""
+        key = f"{self.prefix}:{target_type}:{target_id}"
+        count = r.hget(key, field)
+        return int(count) if count else 0
+    
+    def get_all_stats(self, target_type, target_id):
+        """获取所有统计"""
+        key = f"{self.prefix}:{target_type}:{target_id}"
+        return r.hgetall(key)
+    
+    def get_multiple_counts(self, keys):
+        """批量获取多个计数"""
+        if not keys:
+            return {}
+        values = r.mget(keys)
+        return {key: int(val) if val else 0 for key, val in zip(keys, values)}
+
+# 使用示例
+counter = Counter()
+
+# 文章统计
+counter.increment("article", "12345", "views")      # 阅读量 +1
+counter.increment("article", "12345", "likes")      # 点赞 +1
+counter.increment("article", "12345", "views", 5)   # 阅读量 +5
+
+# 获取统计
+views = counter.get_count("article", "12345", "views")
+all_stats = counter.get_all_stats("article", "12345")
+
+# 批量获取
+keys = [
+    "stats:article:12345",
+    "stats:article:12346",
+    "stats:article:12347"
+]
+counts = counter.get_multiple_counts(keys)
+
+# 视频统计
+counter.increment("video", "v001", "plays")         # 播放量 +1
+counter.increment("video", "v001", "likes")         # 点赞 +1
+counter.decrement("video", "v001", "likes")         # 取消点赞
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>💡 进阶功能</h4>
+                    <div class="code-block">
+# 1. 异步持久化到数据库
+def sync_to_db():
+    """定期将 Redis 计数同步到数据库"""
+    cursor = 0
+    while True:
+        cursor, keys = r.scan(cursor, match="stats:article:*", count=100)
+        for key in keys:
+            data = r.hgetall(key)
+            # 解析 key 获取 article_id
+            parts = key.split(":")
+            article_id = parts[2]
+            # 更新数据库
+            db.execute("""
+                INSERT INTO article_stats (article_id, views, likes)
+                VALUES (?, ?, ?)
+                ON DUPLICATE KEY UPDATE 
+                    views = VALUES(views),
+                    likes = VALUES(likes)
+            """, (article_id, data.get('views', 0), data.get('likes', 0)))
+        
+        if cursor == 0:
+            break
+
+# 2. 防刷限制（同一用户/IP 单位时间内只能计数一次）
+def increment_with_limit(target_type, target_id, user_id, field="views"):
+    """带限流的计数"""
+    limit_key = f"limit:{target_type}:{target_id}:{user_id}:{field}"
+    
+    # 使用 SET NX EX 实现限流
+    if r.set(limit_key, "1", nx=True, ex=60):  # 60 秒内只能计数一次
+        return counter.increment(target_type, target_id, field)
+    return None  # 超出限制
+
+# 3. 实时排行榜结合
+def get_hot_articles(time_range="daily", top_n=10):
+    """获取热门排行（综合阅读、点赞等）"""
+    # 计算热度分数：views*1 + likes*5 + comments*10
+    articles = []
+    cursor = 0
+    while True:
+        cursor, keys = r.scan(cursor, match=f"stats:article:*", count=100)
+        for key in keys:
+            stats = r.hgetall(key)
+            article_id = key.split(":")[2]
+            score = (int(stats.get('views', 0)) * 1 + 
+                    int(stats.get('likes', 0)) * 5 + 
+                    int(stats.get('comments', 0)) * 10)
+            articles.append((article_id, score))
+        if cursor == 0:
+            break
+    
+    # 按热度排序
+    articles.sort(key=lambda x: x[1], reverse=True)
+    return articles[:top_n]
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>⚠️ 常见问题与解决方案</h4>
+                    
+                    <div class="problem-solution">
+                        <div class="problem">
+                            <strong>问题 1：计数不准确</strong>
+                            <p>Redis 宕机导致计数丢失，与数据库不一致。</p>
+                        </div>
+                        <div class="solution">
+                            <strong>解决方案：</strong>
+                            <ul>
+                                <li>开启 AOF 持久化（everysec 策略）</li>
+                                <li>定期异步同步到数据库</li>
+                                <li>接受小范围误差（统计类应用通常可接受）</li>
+                                <li>重要计数使用数据库 + Redis 双写</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="problem-solution">
+                        <div class="problem">
+                            <strong>问题 2：恶意刷量</strong>
+                            <p>黑产批量请求刷高计数。</p>
+                        </div>
+                        <div class="solution">
+                            <strong>解决方案：</strong>
+                            <ul>
+                                <li>基于用户 ID 或 IP 限流</li>
+                                <li>使用布隆过滤器去重</li>
+                                <li>后端分析异常模式</li>
+                                <li>验证码验证</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 应用场景 9: 地理位置 -->
+        <div class="practice-item">
+            <div class="practice-header practice-collapsible">
+                <div class="practice-icon">📍</div>
+                <div class="practice-header-text">
+                    <h3>场景九：地理位置服务</h3>
+                    <p class="practice-lead">基于位置的搜索、附近的人、配送范围等。</p>
+                </div>
+                <div class="practice-toggle">
+                    <span class="toggle-icon">▼</span>
+                    <span class="toggle-text">展开</span>
+                </div>
+            </div>
+            <div class="practice-content module-content">
+                <div class="practice-section">
+                    <h4>📋 场景描述</h4>
+                    <p>外卖配送、打车服务、社交应用等需要基于地理位置进行查询和匹配的场景。</p>
+                </div>
+
+                <div class="practice-section">
+                    <h4>🏗️ 实现方案</h4>
+                    <div class="code-block">
+# 使用 GeoHash 存储位置
+# key: geo:drivers (司机位置)
+# member: driver_id
+# longitude, latitude: 经度、纬度
+
+# 示例
+GEOADD geo:drivers 116.4074 39.9041 driver:001  # 北京
+GEOADD geo:drivers 121.4737 31.2304 driver:002  # 上海
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>🔧 核心命令</h4>
+                    <div class="command-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>命令</th>
+                                    <th>说明</th>
+                                    <th>示例</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>GEOADD key lng lat member</code></td>
+                                    <td>添加位置</td>
+                                    <td><code>GEOADD geo:users 116.4 39.9 user:1</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>GEODIST key member1 member2</code></td>
+                                    <td>计算距离</td>
+                                    <td><code>GEODIST geo:users user:1 user:2 km</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>GEORADIUS key lng lat radius</code></td>
+                                    <td>范围内搜索</td>
+                                    <td><code>GEORADIUS geo:users 116.4 39.9 10 km</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>GEORADIUSBYMEMBER key member radius</code></td>
+                                    <td>查询某人附近的</td>
+                                    <td><code>GEORADIUSBYMEMBER geo:users user:1 5 km</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>GEOPOS key member</code></td>
+                                    <td>获取位置坐标</td>
+                                    <td><code>GEOPOS geo:users user:1</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>GEOHASH key member</code></td>
+                                    <td>获取 GeoHash</td>
+                                    <td><code>GEOHASH geo:users user:1</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>💻 代码示例（附近的人）</h4>
+                    <div class="code-block">
+import redis
+
+r = redis.Redis(host='localhost', port=6379, decode_responses=True)
+
+class LocationService:
+    def __init__(self, key_prefix="geo"):
+        self.key_prefix = key_prefix
+    
+    def add_location(self, category, member_id, longitude, latitude):
+        """添加位置"""
+        key = f"{self.key_prefix}:{category}"
+        return r.geoadd(key, longitude, latitude, member_id)
+    
+    def add_locations_batch(self, category, locations):
+        """批量添加位置
+        locations: [(member_id, lng, lat), ...]
+        """
+        key = f"{self.key_prefix}:{category}"
+        members = [(lng, lat, mid) for mid, lng, lat in locations]
+        return r.geoadd(key, *members)
+    
+    def find_nearby(self, category, longitude, latitude, radius=5, unit='km', with_dist=False):
+        """查找附近的人/对象"""
+        key = f"{self.key_prefix}:{category}"
+        return r.georadius(
+            key, longitude, latitude, radius, unit=unit,
+            with_dist=with_dist, with_coord=True, count=20
+        )
+    
+    def find_nearby_member(self, category, member_id, radius=5, unit='km'):
+        """查找某人附近的其他人"""
+        key = f"{self.key_prefix}:{category}"
+        return r.georadiusbymember(
+            key, member_id, radius, unit=unit,
+            with_dist=True, with_coord=True
+        )
+    
+    def get_distance(self, category, member1, member2, unit='km'):
+        """计算两个成员之间的距离"""
+        key = f"{self.key_prefix}:{category}"
+        return r.geodist(key, member1, member2, unit=unit)
+    
+    def get_location(self, category, member_id):
+        """获取成员位置"""
+        key = f"{self.key_prefix}:{category}"
+        return r.geopos(key, member_id)
+    
+    def remove_location(self, category, member_id):
+        """删除位置"""
+        key = f"{self.key_prefix}:{category}"
+        return r.zrem(key, member_id)
+
+# 使用示例
+location = LocationService()
+
+# 添加用户位置
+location.add_location("users", "user:001", 116.4074, 39.9041)  # 北京
+location.add_location("users", "user:002", 116.3974, 39.9141)  # 北京附近
+location.add_location("users", "user:003", 121.4737, 31.2304)  # 上海
+
+# 批量添加
+users = [
+    ("user:004", 116.4174, 39.8941),
+    ("user:005", 116.3874, 39.9241),
+]
+location.add_locations_batch("users", users)
+
+# 查找 user:001 附近 5km 内的人
+nearby = location.find_nearby_member("users", "user:001", radius=5)
+print(f"附近的人：{nearby}")
+
+# 计算距离
+distance = location.get_distance("users", "user:001", "user:002")
+print(f"距离：{distance} km")
+
+# 查找北京中心 10km 内的所有司机
+drivers_nearby = location.find_nearby("drivers", 116.4074, 39.9041, radius=10)
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>💡 应用场景</h4>
+                    <div class="code-block">
+# 1. 外卖配送范围检查
+def check_delivery_available(user_lng, user_lat, restaurant_id):
+    """检查是否在配送范围内"""
+    # 获取餐厅位置
+    restaurant_pos = location.get_location("restaurants", restaurant_id)
+    if not restaurant_pos:
+        return False
+    
+    # 计算距离
+    distance = r.geodist(
+        "geo:restaurants", 
+        restaurant_id, 
+        f"user:{user_lng}:{user_lat}"
+    )
+    
+    # 假设配送范围 5km
+    return distance and distance <= 5000
+
+# 2. 打车 - 查找附近司机
+def find_nearby_drivers(passenger_lng, passenger_lat, radius=3):
+    """查找附近 3km 内的可用司机"""
+    drivers = location.find_nearby(
+        "drivers:available", 
+        passenger_lng, passenger_lat, 
+        radius=radius, unit='km'
+    )
+    return drivers
+
+# 3. 社交 - 更新用户位置并查找附近的人
+def update_and_find_nearby(user_id, lng, lat, radius=10):
+    """更新位置并查找附近的人"""
+    # 更新位置
+    location.add_location("users:online", user_id, lng, lat)
+    
+    # 设置 30 分钟过期（用户下线自动移除）
+    r.expire(f"geo:users:online", 1800)
+    
+    # 查找附近的人（排除自己）
+    nearby = location.find_nearby_member(
+        "users:online", user_id, radius=radius
+    )
+    return [n for n in nearby if n[0] != user_id]
+                    </div>
+                </div>
+
+                <div class="practice-section">
+                    <h4>⚠️ 常见问题与解决方案</h4>
+                    
+                    <div class="problem-solution">
+                        <div class="problem">
+                            <strong>问题 1：精度问题</strong>
+                            <p>GeoHash 精度有限，极近距离可能不够准确。</p>
+                        </div>
+                        <div class="solution">
+                            <strong>解决方案：</strong>
+                            <ul>
+                                <li>使用更精确的距离计算公式（Haversine）</li>
+                                <li>结合数据库的 GIS 功能</li>
+                                <li>接受 Redis Geo 的精度（通常足够）</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="problem-solution">
+                        <div class="problem">
+                            <strong>问题 2：位置频繁更新</strong>
+                            <p>司机/用户位置频繁变化，大量写入操作。</p>
+                        </div>
+                        <div class="solution">
+                            <strong>解决方案：</strong>
+                            <ul>
+                                <li>降低更新频率（如 30 秒一次）</li>
+                                <li>只在移动超过阈值时更新</li>
+                                <li>使用批处理减少网络往返</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <style>
@@ -1470,6 +2182,10 @@ else:
                     practiceItem.classList.toggle('collapsed');
                 });
             });
+            
+            // 更新场景计数
+            const totalScenarios = practiceCollapsibleHeaders.length;
+            console.log(`共加载 ${totalScenarios} 个实战应用场景`);
         });
     </script>
 
