@@ -350,6 +350,333 @@ redis-server --loadmodule target/release/libredis_cell.so
                     </div>
                 </div>
             </div>
+
+            <!-- RedisAI -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">🤖</div>
+                    <div>
+                        <h3>RedisAI</h3>
+                        <p class="module-lead">深度学习推理模块，支持在 Redis 中运行 AI 模型，实现实时推理。</p>
+                    </div>
+                </div>
+                <div class="module-details">
+                    <div class="module-detail-row">
+                        <h4>📌 核心功能</h4>
+                        <ul>
+                            <li>支持 TensorFlow、PyTorch、ONNX 等框架</li>
+                            <li>模型存储和管理</li>
+                            <li>实时推理执行</li>
+                            <li>脚本执行（TorchScript）</li>
+                            <li>张量数据类型支持</li>
+                            <li>模型版本管理</li>
+                        </ul>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例</h4>
+                        <div class="code-block">
+# 设置模型
+AI.MODELSTORE mymodel TF CPU TAGS image classifier \
+  INPUTS 1 blobs INPUT \
+  OUTPUTS 1 OUTPUT \
+  BLOB [model_binary]
+
+# 设置输入数据
+AI.TENSORSET INPUT FLOAT 1 224 224 3 [data...]
+
+# 运行推理
+AI.MODELRUN mymodel INPUTS INPUT OUTPUTS OUTPUT
+
+# 获取结果
+AI.TENSORGET OUTPUT
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>📥 安装方式</h4>
+                        <div class="code-block">
+# Docker 方式（推荐）
+docker run -p 6379:6379 redisai/redisai:latest
+
+# 或从源码编译
+git clone https://github.com/RedisAI/RedisAI
+cd RedisAI
+make
+                        </div>
+                        <a href="https://redisai.io/" target="_blank" class="module-link">官方文档 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RedisGears -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">⚙️</div>
+                    <div>
+                        <h3>RedisGears</h3>
+                        <p class="module-lead">无服务器计算框架，支持在 Redis 上运行自定义逻辑和数据处理。</p>
+                    </div>
+                </div>
+                <div class="module-details">
+                    <div class="module-detail-row">
+                        <h4>📌 核心功能</h4>
+                        <ul>
+                            <li>事件驱动的函数执行</li>
+                            <li>支持 Python 和 JavaScript</li>
+                            <li>键空间事件触发</li>
+                            <li>定时任务调度</li>
+                            <li>流数据处理</li>
+                            <li>分布式执行</li>
+                        </ul>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例</h4>
+                        <div class="code-block">
+# 注册键空间事件触发器
+GearsBuilder() \
+    .filter(lambda x: x['key'].startswith('user:')) \
+    .map(lambda x: executeCommand('INCR', 'user:count')) \
+    .register()
+
+# 定时任务
+GearsBuilder('KeySpaceNotification') \
+    .timeTrigger('1000', lambda x: executeCommand('PING')) \
+    .register()
+
+# 流处理
+GearsBuilder('StreamReader') \
+    .flatmap(lambda x: x['records']) \
+    .run('mystream')
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>📥 安装方式</h4>
+                        <div class="code-block">
+# Docker 方式
+docker run -p 6379:6379 redisfab/redisgears:latest
+
+# 或加载模块
+redis-server --loadmodule /path/to/redisgears.so \
+  --plugin /path/to/js_plugin.so
+                        </div>
+                        <a href="https://redis.io/docs/latest/develop/data-types/functions/" target="_blank" class="module-link">官方文档 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ReJSON -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">📝</div>
+                    <div>
+                        <h3>ReJSON</h3>
+                        <p class="module-lead">早期 JSON 模块实现，现已被 RedisJSON 取代，但仍广泛使用。</p>
+                    </div>
+                </div>
+                <div class="module-details">
+                    <div class="module-detail-row">
+                        <h4>📌 核心功能</h4>
+                        <ul>
+                            <li>完整 JSON 支持</li>
+                            <li>JSONPath 查询</li>
+                            <li>原子更新操作</li>
+                            <li>类型检查</li>
+                            <li>与 Redis 原生类型互操作</li>
+                        </ul>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例</h4>
+                        <div class="code-block">
+# 设置 JSON
+JSON.SET doc $ '{"hello": "world", "count": 42}'
+
+# 获取整个文档
+JSON.GET doc $
+> {"hello":"world","count":42}
+
+# 获取特定路径
+JSON.GET doc $.hello
+> ["world"]
+
+# 更新数值
+JSON.NUMINCRBY doc $.count 1
+> [43]
+
+# 数组操作
+JSON.ARRAPPEND doc $ '"new_item"'
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>📥 安装方式</h4>
+                        <div class="code-block">
+# 注意：推荐使用 RedisJSON（rejson.so）
+# ReJSON 已合并到 RedisJSON 项目
+
+# 加载模块
+redis-server --loadmodule /path/to/rejson.so
+                        </div>
+                        <a href="https://github.com/RedisJSON/RedisJSON" target="_blank" class="module-link">GitHub →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- redis-ml -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">🧠</div>
+                    <div>
+                        <h3>redis-ml</h3>
+                        <p class="module-lead">机器学习模块，提供经典 ML 算法的 Redis 实现。</p>
+                    </div>
+                </div>
+                <div class="module-details">
+                    <div class="module-detail-row">
+                        <h4>📌 核心功能</h4>
+                        <ul>
+                            <li>K-means 聚类</li>
+                            <li>线性回归</li>
+                            <li>逻辑回归</li>
+                            <li>决策树</li>
+                            <li>特征工程支持</li>
+                            <li>模型持久化</li>
+                        </ul>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例</h4>
+                        <div class="code-block">
+# K-means 聚类
+ML.KMEANS.CREATE model1 3 2  # 3 个簇，2 维特征
+ML.KMEANS.ADD model1 [1.0, 2.0] [3.0, 4.0] [5.0, 6.0]
+ML.KMEANS.TRAIN model1
+
+# 预测
+ML.KMEANS.PREDICT model1 [2.5, 3.5]
+> 1  # 簇 ID
+
+# 获取聚类中心
+ML.KMEANS.CENTERS model1
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>📥 安装方式</h4>
+                        <div class="code-block">
+# 从源码编译
+git clone https://github.com/RedisAI/redis-ml
+cd redis-ml
+make
+
+# 加载模块
+redis-server --loadmodule target/release/redis_ml.so
+                        </div>
+                        <a href="https://github.com/RedisAI/redis-ml" target="_blank" class="module-link">GitHub →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- redis-count-min-sketch -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">📊</div>
+                    <div>
+                        <h3>redis-count-min-sketch</h3>
+                        <p class="module-lead">计数最小草图模块，用于高效统计频率。</p>
+                    </div>
+                </div>
+                <div class="module-details">
+                    <div class="module-detail-row">
+                        <h4>📌 核心功能</h4>
+                        <ul>
+                            <li>空间高效的频率统计</li>
+                            <li>可配置的精度</li>
+                            <li>支持合并多个草图</li>
+                            <li>适合大数据集</li>
+                            <li>低内存占用</li>
+                        </ul>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例</h4>
+                        <div class="code-block">
+# 创建草图
+CMS.INIT mycms 1000 5  # 宽度 1000，深度 5
+
+# 增加计数
+CMS.INCRBY mycms item1 1
+CMS.INCRBY mycms item2 5
+
+# 查询计数
+CMS.QUERY mycms item1 item2
+> 1 5
+
+# 合并草图
+CMS.MERGE dest 2 src1 src2 WEIGHTS 1 2
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>📥 安装方式</h4>
+                        <div class="code-block">
+# 已包含在 RedisBloom 中
+# 单独模块已不再维护
+
+# 使用 RedisBloom
+docker run -p 6379:6379 redis/redis-stack-server:latest
+                        </div>
+                        <a href="https://redis.io/docs/latest/develop/data-types/probabilistic/" target="_blank" class="module-link">RedisBloom 文档 →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- redis-hyperloglog -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">🔢</div>
+                    <div>
+                        <h3>redis-hyperloglog</h3>
+                        <p class="module-lead">HyperLogLog 基数计数模块，用于唯一值统计。</p>
+                    </div>
+                </div>
+                <div class="module-details">
+                    <div class="module-detail-row">
+                        <h4>📌 核心功能</h4>
+                        <ul>
+                            <li>超低内存占用</li>
+                            <li>基数估算（唯一值数量）</li>
+                            <li>标准误差约 0.81%</li>
+                            <li>支持合并多个 HLL</li>
+                            <li>固定 12KB 内存</li>
+                        </ul>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例</h4>
+                        <div class="code-block">
+# 添加元素
+PFADD hll user1 user2 user3
+> 1  # 首次添加返回 1
+
+PFADD hll user2 user3 user4
+> 1  # 有新元素
+
+# 计数
+PFCOUNT hll
+> 4  # 估算的唯一值数量
+
+# 合并多个 HLL
+PFMERGE dest hll1 hll2
+PFCOUNT dest
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>📥 安装方式</h4>
+                        <div class="code-block">
+# HyperLogLog 是 Redis 原生功能
+# 无需额外模块，Redis 2.8.9+ 已支持
+
+# 直接使用
+redis-cli
+127.0.0.1:6379> PFADD myhll item1 item2
+                        </div>
+                        <a href="https://redis.io/docs/latest/develop/data-types/hyperloglog/" target="_blank" class="module-link">官方文档 →</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- 模块开发指南 -->
