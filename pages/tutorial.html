@@ -19,7 +19,7 @@
                 <li><a href="commands.html">命令参考</a></li>
                 <li><a href="playground.html">交互演示</a></li>
                 <li><a href="history.html">发展历程</a></li>
-                <li><a href="modules.html">插件系统</a></li>
+                <li><a href="modules.html">模块系统</a></li>
             </ul>
         </div>
     </nav>
@@ -36,7 +36,7 @@
                     <li><a href="#messaging">5. 消息命令</a></li>
                     <li><a href="#persistence">6. 持久化</a></li>
                     <li><a href="#advanced">7. 高级特性</a></li>
-                    <li><a href="#plugin">8. 插件编写</a></li>
+                    <li><a href="#plugin">8. 模块编写</a></li>
                     <li><a href="#latest">9. 最新特性</a></li>
                     <li><a href="#redisearch">10. RediSearch</a></li>
                 </ul>
@@ -455,7 +455,7 @@ EVAL "return redis.call('SET', KEYS[1], ARGV[1])&quot; 1 mykey myvalue
                 </section>
 
                 <section id="plugin" class="content-section">
-                    <h2>🔧 8. 插件编写</h2>
+                    <h2>🔧 8. 模块编写</h2>
 
                     <p>Redis 支持通过模块系统扩展其功能，开发者可以使用 C 语言或其他语言（通过 CFFI）编写自定义模块，添加新的数据类型、命令和功能。</p>
 
