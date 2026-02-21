@@ -463,97 +463,167 @@ redis-server --loadmodule /path/to/redisgears.so \
                 </div>
             </div>
 
-            <!-- ReJSON -->
-            <div class="module-item">
-                <div class="module-header-full">
-                    <div class="module-icon-large">📝</div>
-                    <div>
-                        <h3>ReJSON</h3>
-                        <p class="module-lead">早期 JSON 模块实现，现已被 RedisJSON 取代，但仍广泛使用。</p>
-                    </div>
-                </div>
-                <div class="module-details">
-                    <div class="module-detail-row">
-                        <h4>📌 核心功能</h4>
-                        <ul>
-                            <li>完整 JSON 支持</li>
-                            <li>JSONPath 查询</li>
-                            <li>原子更新操作</li>
-                            <li>类型检查</li>
-                            <li>与 Redis 原生类型互操作</li>
-                        </ul>
-                    </div>
-                    <div class="module-detail-row">
-                        <h4>💻 使用示例</h4>
-                        <div class="code-block">
-# 设置 JSON
-JSON.SET doc $ '{"hello": "world", "count": 42}'
-
-# 获取整个文档
-JSON.GET doc $
-> {"hello":"world","count":42}
-
-# 获取特定路径
-JSON.GET doc $.hello
-> ["world"]
-
-# 更新数值
-JSON.NUMINCRBY doc $.count 1
-> [43]
-
-# 数组操作
-JSON.ARRAPPEND doc $ '"new_item"'
-                        </div>
-                    </div>
-                    <div class="module-detail-row">
-                        <h4>📥 安装方式</h4>
-                        <div class="code-block">
-# 注意：推荐使用 RedisJSON（rejson.so）
-# ReJSON 已合并到 RedisJSON 项目
-
-# 加载模块
-redis-server --loadmodule /path/to/rejson.so
-                        </div>
-                        <a href="https://github.com/RedisJSON/RedisJSON" target="_blank" class="module-link">GitHub →</a>
-                    </div>
-                </div>
-            </div>
-
             <!-- redis-ml -->
             <div class="module-item">
                 <div class="module-header-full">
                     <div class="module-icon-large">🧠</div>
                     <div>
                         <h3>redis-ml</h3>
-                        <p class="module-lead">机器学习模块，提供经典 ML 算法的 Redis 实现。</p>
+                        <p class="module-lead">机器学习模块，提供经典 ML 算法的 Redis 实现，支持在 Redis 中进行模型训练和预测。</p>
                     </div>
                 </div>
                 <div class="module-details">
                     <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
-                            <li>K-means 聚类</li>
-                            <li>线性回归</li>
-                            <li>逻辑回归</li>
-                            <li>决策树</li>
+                            <li>K-means 聚类分析</li>
+                            <li>线性回归（Linear Regression）</li>
+                            <li>逻辑回归（Logistic Regression）</li>
+                            <li>决策树（Decision Tree）</li>
+                            <li>随机森林（Random Forest）</li>
+                            <li>支持向量机（SVM）</li>
                             <li>特征工程支持</li>
-                            <li>模型持久化</li>
+                            <li>模型持久化和版本管理</li>
+                            <li>实时预测推理</li>
                         </ul>
                     </div>
                     <div class="module-detail-row">
-                        <h4>💻 使用示例</h4>
+                        <h4>💻 使用示例 - K-means 聚类</h4>
                         <div class="code-block">
-# K-means 聚类
-ML.KMEANS.CREATE model1 3 2  # 3 个簇，2 维特征
-ML.KMEANS.ADD model1 [1.0, 2.0] [3.0, 4.0] [5.0, 6.0]
-ML.KMEANS.TRAIN model1
+# 创建 K-means 模型：3 个簇，2 维特征
+ML.KMEANS.CREATE kmeans_model 3 2
 
-# 预测
-ML.KMEANS.PREDICT model1 [2.5, 3.5]
-> 1  # 簇 ID
+# 添加训练数据点
+ML.KMEANS.ADD kmeans_model [1.0, 2.0] [1.5, 1.8] [5.0, 8.0] [8.0, 8.0] [1.0, 0.6] [9.0, 11.0]
+
+# 训练模型
+ML.KMEANS.TRAIN kmeans_model ITERATIONS 100
+
+# 预测新数据点属于哪个簇
+ML.KMEANS.PREDICT kmeans_model [2.0, 3.0]
+> 0  # 返回簇 ID
 
 # 获取聚类中心
-ML.KMEANS.CENTERS model1
+ML.KMEANS.CENTERS kmeans_model
+> 1) [1.17, 1.47]  # 簇 0 中心
+   2) [7.50, 8.00]  # 簇 1 中心
+   3) [9.00, 11.0]  # 簇 2 中心
+
+# 获取模型信息
+ML.KMEANS.INFO kmeans_model
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例 - 线性回归</h4>
+                        <div class="code-block">
+# 创建线性回归模型：1 个特征（房屋面积），预测目标（房价）
+ML.LR.CREATE house_price_model 1
+
+# 添加训练数据：[面积] -> 价格
+ML.LR.ADD house_price_model [50] 150000
+ML.LR.ADD house_price_model [80] 240000
+ML.LR.ADD house_price_model [100] 300000
+ML.LR.ADD house_price_model [120] 360000
+ML.LR.ADD house_price_model [150] 450000
+
+# 训练模型
+ML.LR.TRAIN house_price_model
+
+# 预测：130 平米的房子价格
+ML.LR.PREDICT house_price_model [130]
+> 390000  # 预测价格
+
+# 获取模型系数（斜率和截距）
+ML.LR.COEFFICIENTS house_price_model
+> [3000, 0]  # 每平米 3000 元
+
+# 模型评估
+ML.LR.SCORE house_price_model
+> R² = 0.998  # 拟合度很高
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例 - 逻辑回归（分类）</h4>
+                        <div class="code-block">
+# 创建逻辑回归模型：2 个特征（年龄、收入），二分类
+ML.LOGR.CREATE user_churn_model 2
+
+# 添加训练数据：[年龄，收入] -> 是否流失 (0/1)
+ML.LOGR.ADD user_churn_model [25, 5000] 0  # 未流失
+ML.LOGR.ADD user_churn_model [30, 8000] 0
+ML.LOGR.ADD user_churn_model [45, 12000] 1  # 流失
+ML.LOGR.ADD user_churn_model [50, 15000] 1
+ML.LOGR.ADD user_churn_model [35, 6000] 0
+ML.LOGR.ADD user_churn_model [55, 20000] 1
+
+# 训练模型
+ML.LOGR.TRAIN user_churn_model ITERATIONS 1000 LEARNING_RATE 0.01
+
+# 预测：35 岁，收入 7000 的用户
+ML.LOGR.PREDICT user_churn_model [35, 7000]
+> 0  # 预测不会流失
+
+# 获取预测概率
+ML.LOGR.PROBABILITY user_churn_model [35, 7000]
+> 0.23  # 23% 的流失概率
+
+# 获取模型权重
+ML.LOGR.WEIGHTS user_churn_model
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例 - 决策树</h4>
+                        <div class="code-block">
+# 创建决策树分类器：3 个特征
+ML.DT.CREATE dt_model 3 CLASSES 2
+
+# 添加训练数据：[特征 1, 特征 2, 特征 3] -> 类别
+ML.DT.ADD dt_model [1, 0, 1] 0
+ML.DT.ADD dt_model [0, 1, 0] 1
+ML.DT.ADD dt_model [1, 1, 0] 0
+ML.DT.ADD dt_model [0, 0, 1] 1
+ML.DT.ADD dt_model [1, 0, 0] 0
+ML.DT.ADD dt_model [0, 1, 1] 1
+
+# 训练决策树
+ML.DT.TRAIN dt_model MAX_DEPTH 5
+
+# 预测
+ML.DT.PREDICT dt_model [1, 0, 1]
+> 0
+
+# 获取特征重要性
+ML.DT.FEATURE_IMPORTANCE dt_model
+> [0.5, 0.3, 0.2]  # 特征 1 最重要
+
+# 导出决策树结构（JSON 格式）
+ML.DT.TREE dt_model
+                        </div>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>💻 使用示例 - 模型管理</h4>
+                        <div class="code-block">
+# 保存模型到持久化存储
+ML.MODEL.SAVE kmeans_model /path/to/models/kmeans.rdb
+
+# 从文件加载模型
+ML.MODEL.LOAD kmeans_model_v2 /path/to/models/kmeans.rdb
+
+# 列出所有模型
+ML.MODEL.LIST
+> 1) "kmeans_model"
+   2) "house_price_model"
+   3) "user_churn_model"
+
+# 删除模型
+ML.MODEL.DELETE old_model
+
+# 导出模型为 PMML 格式（可与其他系统互操作）
+ML.MODEL.EXPORT kmeans_model PMML /path/to/export.xml
+
+# 模型版本管理
+ML.MODEL.VERSION kmeans_model
+> 1.0.2
                         </div>
                     </div>
                     <div class="module-detail-row">
@@ -562,12 +632,31 @@ ML.KMEANS.CENTERS model1
 # 从源码编译
 git clone https://github.com/RedisAI/redis-ml
 cd redis-ml
+
+# 安装依赖
+pip install -r requirements.txt
+
+# 编译
 make
 
 # 加载模块
 redis-server --loadmodule target/release/redis_ml.so
+
+# Docker 方式（推荐）
+docker run -p 6379:6379 redisai/redis-ml:latest
                         </div>
                         <a href="https://github.com/RedisAI/redis-ml" target="_blank" class="module-link">GitHub →</a>
+                    </div>
+                    <div class="module-detail-row">
+                        <h4>🎯 应用场景</h4>
+                        <ul>
+                            <li><strong>用户分群：</strong>基于行为数据进行客户细分</li>
+                            <li><strong>销售预测：</strong>根据历史数据预测未来销售额</li>
+                            <li><strong>风险评估：</strong>信用评分和欺诈检测</li>
+                            <li><strong>推荐系统：</strong>用户兴趣聚类和物品分类</li>
+                            <li><strong>异常检测：</strong>识别异常数据点</li>
+                            <li><strong>实时决策：</strong>在线预测和分类</li>
+                        </ul>
                     </div>
                 </div>
             </div>
