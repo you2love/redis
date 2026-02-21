@@ -34,16 +34,18 @@
         <div class="content-section">
             <h2>📦 知名 Redis 插件/模块</h2>
             
-            <div class="module-grid">
-                <!-- RediSearch -->
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-icon">🔍</div>
+            <!-- RediSearch -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">🔍</div>
+                    <div>
                         <h3>RediSearch</h3>
+                        <p class="module-lead">强大的全文搜索引擎，支持二级索引、模糊搜索、向量相似度搜索等。</p>
                     </div>
-                    <p class="module-description">强大的全文搜索引擎，支持二级索引、模糊搜索、向量相似度搜索等。</p>
-                    <div class="module-features">
-                        <h4>核心功能</h4>
+                </div>
+                <div class="module-detail-grid">
+                    <div class="module-detail-section">
+                        <h4>📌 核心功能</h4>
                         <ul>
                             <li>全文搜索和聚合查询</li>
                             <li>向量相似度搜索（VSS）</li>
@@ -52,8 +54,8 @@
                             <li>自动补全建议</li>
                         </ul>
                     </div>
-                    <div class="module-usage">
-                        <h4>使用示例</h4>
+                    <div class="module-detail-section">
+                        <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 创建索引
 FT.CREATE idx:product ON JSON PREFIX 1 product: SCHEMA \
@@ -68,8 +70,8 @@ FT.SEARCH idx:product "@category:{electronics} @price:[0 1000]"
 FT.SEARCH idx:products "*=>[KNN 10 @vector $BLOB]" PARAMS 2 BLOB [blob]
                         </div>
                     </div>
-                    <div class="module-install">
-                        <h4>安装方式</h4>
+                    <div class="module-detail-section">
+                        <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Docker 方式
 docker run -p 6379:6379 redis/redis-stack-server:latest
@@ -80,16 +82,20 @@ redis-server --loadmodule /path/to/redisearch.so
                         <a href="https://redis.io/docs/latest/develop/data-types/search/" target="_blank" class="module-link">官方文档 →</a>
                     </div>
                 </div>
+            </div>
 
-                <!-- RedisJSON -->
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-icon">📋</div>
+            <!-- RedisJSON -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">📋</div>
+                    <div>
                         <h3>RedisJSON</h3>
+                        <p class="module-lead">原生 JSON 数据类型支持，允许在 Redis 中存储、查询和操作 JSON 文档。</p>
                     </div>
-                    <p class="module-description">原生 JSON 数据类型支持，允许在 Redis 中存储、查询和操作 JSON 文档。</p>
-                    <div class="module-features">
-                        <h4>核心功能</h4>
+                </div>
+                <div class="module-detail-grid">
+                    <div class="module-detail-section">
+                        <h4>📌 核心功能</h4>
                         <ul>
                             <li>JSONPath 查询语法</li>
                             <li>原子级字段操作</li>
@@ -98,8 +104,8 @@ redis-server --loadmodule /path/to/redisearch.so
                             <li>Schema 验证</li>
                         </ul>
                     </div>
-                    <div class="module-usage">
-                        <h4>使用示例</h4>
+                    <div class="module-detail-section">
+                        <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 设置 JSON 文档
 JSON.SET user:1001 $ '{"name":"张三","age":30,"hobbies":["读书","游泳"]}'
@@ -118,8 +124,8 @@ JSON.ARRAPPEND user:1001 $.hobbies '"旅行"'
 JSON.DEL user:1001 $.age
                         </div>
                     </div>
-                    <div class="module-install">
-                        <h4>安装方式</h4>
+                    <div class="module-detail-section">
+                        <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Redis Stack 已内置
 docker run -p 6379:6379 redis/redis-stack-server:latest
@@ -130,16 +136,20 @@ redis-server --loadmodule /path/to/rejson.so
                         <a href="https://redis.io/docs/latest/develop/data-types/json/" target="_blank" class="module-link">官方文档 →</a>
                     </div>
                 </div>
+            </div>
 
-                <!-- RedisTimeSeries -->
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-icon">📈</div>
+            <!-- RedisTimeSeries -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">📈</div>
+                    <div>
                         <h3>RedisTimeSeries</h3>
+                        <p class="module-lead">时间序列数据存储和查询模块，适用于 IoT、监控、金融等场景。</p>
                     </div>
-                    <p class="module-description">时间序列数据存储和查询模块，适用于 IoT、监控、金融等场景。</p>
-                    <div class="module-features">
-                        <h4>核心功能</h4>
+                </div>
+                <div class="module-detail-grid">
+                    <div class="module-detail-section">
+                        <h4>📌 核心功能</h4>
                         <ul>
                             <li>高效时间序列存储</li>
                             <li>自动降采样（Downsampling）</li>
@@ -148,8 +158,8 @@ redis-server --loadmodule /path/to/rejson.so
                             <li>标签索引和过滤</li>
                         </ul>
                     </div>
-                    <div class="module-usage">
-                        <h4>使用示例</h4>
+                    <div class="module-detail-section">
+                        <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 创建时间序列
 TS.CREATE temperature:sensor:1 RETENTION 86400000 LABELS sensor_id 1 location 北京
@@ -167,8 +177,8 @@ TS.MRANGE - + FILTER location=北京 AGGREGATION AVG 3600000
 TS.CREATERULE temperature:sensor:1 temperature:avg AGGREGATION AVG 3600000
                         </div>
                     </div>
-                    <div class="module-install">
-                        <h4>安装方式</h4>
+                    <div class="module-detail-section">
+                        <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Redis Stack 已内置
 docker run -p 6379:6379 redis/redis-stack-server:latest
@@ -179,16 +189,20 @@ redis-server --loadmodule /path/to/redistimeseries.so
                         <a href="https://redis.io/docs/latest/develop/data-types/timeseries/" target="_blank" class="module-link">官方文档 →</a>
                     </div>
                 </div>
+            </div>
 
-                <!-- RedisGraph -->
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-icon">🕸️</div>
+            <!-- RedisGraph -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">🕸️</div>
+                    <div>
                         <h3>RedisGraph</h3>
+                        <p class="module-lead">图数据库模块，使用 Cypher 查询语言，支持关系数据的存储和查询。</p>
                     </div>
-                    <p class="module-description">图数据库模块，使用 Cypher 查询语言，支持关系数据的存储和查询。</p>
-                    <div class="module-features">
-                        <h4>核心功能</h4>
+                </div>
+                <div class="module-detail-grid">
+                    <div class="module-detail-section">
+                        <h4>📌 核心功能</h4>
                         <ul>
                             <li>Cypher 查询语言支持</li>
                             <li>属性图模型</li>
@@ -197,8 +211,8 @@ redis-server --loadmodule /path/to/redistimeseries.so
                             <li>路径查找算法</li>
                         </ul>
                     </div>
-                    <div class="module-usage">
-                        <h4>使用示例</h4>
+                    <div class="module-detail-section">
+                        <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 创建节点
 GRAPH.QUERY social "CREATE (:Person {name:'张三', age:30})"
@@ -213,8 +227,8 @@ GRAPH.QUERY social "MATCH (p:Person {name:'张三'})-[:FRIEND]->(f) RETURN f.nam
 GRAPH.QUERY social "MATCH (p:Person)-[:FRIEND*2..3]->(f) RETURN p.name, f.name"
                         </div>
                     </div>
-                    <div class="module-install">
-                        <h4>安装方式</h4>
+                    <div class="module-detail-section">
+                        <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Docker 方式
 docker run -p 6379:6379 redisgraph/redisgraph
@@ -225,16 +239,20 @@ redis-server --loadmodule /path/to/redisgraph.so
                         <a href="https://redis.io/docs/latest/develop/data-types/graph/" target="_blank" class="module-link">官方文档 →</a>
                     </div>
                 </div>
+            </div>
 
-                <!-- RedisBloom -->
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-icon">🌺</div>
+            <!-- RedisBloom -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">🌺</div>
+                    <div>
                         <h3>RedisBloom</h3>
+                        <p class="module-lead">概率数据结构集合，包括布隆过滤器、计数布隆过滤器、Cuckoo 过滤器等。</p>
                     </div>
-                    <p class="module-description">概率数据结构集合，包括布隆过滤器、计数布隆过滤器、Cuckoo 过滤器等。</p>
-                    <div class="module-features">
-                        <h4>核心功能</h4>
+                </div>
+                <div class="module-detail-grid">
+                    <div class="module-detail-section">
+                        <h4>📌 核心功能</h4>
                         <ul>
                             <li>布隆过滤器（Bloom Filter）</li>
                             <li>计数布隆过滤器</li>
@@ -243,8 +261,8 @@ redis-server --loadmodule /path/to/redisgraph.so
                             <li>HyperLogLog 增强</li>
                         </ul>
                     </div>
-                    <div class="module-usage">
-                        <h4>使用示例</h4>
+                    <div class="module-detail-section">
+                        <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 创建布隆过滤器
 BF.RESERVE mybloom 0.01 1000
@@ -266,8 +284,8 @@ CF.ADD mycf product456
 CF.EXISTS mycf product456
                         </div>
                     </div>
-                    <div class="module-install">
-                        <h4>安装方式</h4>
+                    <div class="module-detail-section">
+                        <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Redis Stack 已内置
 docker run -p 6379:6379 redis/redis-stack-server:latest
@@ -278,16 +296,20 @@ redis-server --loadmodule /path/to/redisbloom.so
                         <a href="https://redis.io/docs/latest/develop/data-types/probabilistic/" target="_blank" class="module-link">官方文档 →</a>
                     </div>
                 </div>
+            </div>
 
-                <!-- RedisCell -->
-                <div class="module-card">
-                    <div class="module-header">
-                        <div class="module-icon">⚡</div>
+            <!-- RedisCell -->
+            <div class="module-item">
+                <div class="module-header-full">
+                    <div class="module-icon-large">⚡</div>
+                    <div>
                         <h3>RedisCell</h3>
+                        <p class="module-lead">分布式限流模块，实现令牌桶算法，用于 API 限流和速率控制。</p>
                     </div>
-                    <p class="module-description">分布式限流模块，实现令牌桶算法，用于 API 限流和速率控制。</p>
-                    <div class="module-features">
-                        <h4>核心功能</h4>
+                </div>
+                <div class="module-detail-grid">
+                    <div class="module-detail-section">
+                        <h4>📌 核心功能</h4>
                         <ul>
                             <li>令牌桶算法实现</li>
                             <li>分布式限流</li>
@@ -296,8 +318,8 @@ redis-server --loadmodule /path/to/redisbloom.so
                             <li>灵活的配置选项</li>
                         </ul>
                     </div>
-                    <div class="module-usage">
-                        <h4>使用示例</h4>
+                    <div class="module-detail-section">
+                        <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 限流配置：每秒 10 个请求，桶容量 20
 CL.THROTTLE user:123 10 20 1
@@ -313,8 +335,8 @@ CL.THROTTLE user:123 10 20 1
 CL.THROTTLE user:123 10 20 1 0
                         </div>
                     </div>
-                    <div class="module-install">
-                        <h4>安装方式</h4>
+                    <div class="module-detail-section">
+                        <h4>📥 安装方式</h4>
                         <div class="code-block">
 # 编译安装
 git clone https://github.com/brandur/redis-cell
@@ -953,7 +975,7 @@ RedisModule_FreeThreadSafeContext(safeCtx);
     </div>
 
     <style>
-        /* 模块卡片网格 */
+        /* 模块卡片网格 - 旧样式，已废弃 */
         .module-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
@@ -961,81 +983,94 @@ RedisModule_FreeThreadSafeContext(safeCtx);
             margin-top: 1.5rem;
         }
 
-        .module-card {
+        /* 模块垂直布局样式 */
+        .module-item {
             background: white;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 2rem;
             border: 1px solid #e0e0e0;
+            overflow: hidden;
         }
 
-        .module-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        .module-item:first-child {
+            margin-top: 1.5rem;
         }
 
-        .module-header {
+        .module-header-full {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 1.5rem;
+            padding: 2rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
-        .module-icon {
-            font-size: 2.5rem;
+        .module-icon-large {
+            font-size: 3.5rem;
+            flex-shrink: 0;
         }
 
-        .module-header h3 {
+        .module-header-full h3 {
             color: white;
+            margin: 0 0 0.5rem 0;
+            font-size: 1.8rem;
+        }
+
+        .module-lead {
+            color: rgba(255,255,255,0.9);
             margin: 0;
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
         }
 
-        .module-description {
-            padding: 1rem 1.5rem;
-            color: #666;
-            border-bottom: 1px solid #e0e0e0;
+        .module-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1.5rem;
         }
 
-        .module-features,
-        .module-usage,
-        .module-install {
-            padding: 1rem 1.5rem;
+        .module-detail-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
         }
 
-        .module-features h4,
-        .module-usage h4,
-        .module-install h4 {
+        .module-detail-section h4 {
             color: #2c3e50;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
+            margin: 0 0 1rem 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .module-features ul {
+        .module-detail-section ul {
             padding-left: 1.5rem;
             color: #555;
+            margin: 0;
         }
 
-        .module-features li {
-            margin-bottom: 0.3rem;
+        .module-detail-section li {
+            margin-bottom: 0.5rem;
         }
 
-        .module-install {
-            background: #f8f9fa;
-            border-top: 1px solid #e0e0e0;
+        .module-detail-section .code-block {
+            margin: 0;
+            font-size: 0.85rem;
         }
 
         .module-link {
             display: inline-block;
-            margin-top: 0.5rem;
+            margin-top: 0.75rem;
             color: #667eea;
             text-decoration: none;
             font-weight: 500;
+            transition: color 0.3s;
         }
 
         .module-link:hover {
+            color: #764ba2;
             text-decoration: underline;
         }
 
@@ -1129,8 +1164,27 @@ RedisModule_FreeThreadSafeContext(safeCtx);
         }
 
         @media (max-width: 768px) {
-            .module-grid {
+            .module-header-full {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem;
+            }
+
+            .module-icon-large {
+                font-size: 3rem;
+            }
+
+            .module-header-full h3 {
+                font-size: 1.5rem;
+            }
+
+            .module-lead {
+                font-size: 1rem;
+            }
+
+            .module-detail-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
             }
 
             .step {
