@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>发展历程 - Redis 学习教程</title>
+    <meta name="description" content="Redis 版本发展历程，主要特性和应用场景">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">
+                <i>🗃️</i> Redis 学习教程
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="tutorial.html">基础教程</a></li>
+                <li><a href="commands.html">命令参考</a></li>
+                <li><a href="playground.html">交互演示</a></li>
+                <li><a href="history.html" class="active">发展历程</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="content-section">
+            <h2>📜 Redis 发展历程</h2>
+            <p class="lead">Redis 自 2009 年诞生以来，经历了多个重要版本的演进，不断丰富功能和提升性能。</p>
+        </div>
+
+        <div class="timeline">
+            <!-- Redis 1.x -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2009</div>
+                <div class="timeline-content">
+                    <h3>🚀 Redis 1.0 - 诞生</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：1.0</span>
+                        <span class="version-date">2009 年 5 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>首次公开发布，由 Salvatore Sanfilippo（antirez）创建</li>
+                        <li>支持基本的数据类型：字符串、列表、集合</li>
+                        <li>内存存储，键值对数据结构</li>
+                        <li>简单的持久化机制</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">简单缓存</span>
+                        <span class="scenario-tag">数据存储</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 2.0 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2010</div>
+                <div class="timeline-content">
+                    <h3>🎯 Redis 2.0 - 发布订阅</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：2.0</span>
+                        <span class="version-date">2010 年 11 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>新增发布/订阅（Pub/Sub）消息模式</li>
+                        <li>添加哈希（Hash）数据类型</li>
+                        <li>支持虚拟内存（后续移除）</li>
+                        <li>新增脚本功能雏形</li>
+                        <li>支持多个数据库</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">实时通知</span>
+                        <span class="scenario-tag">消息传递</span>
+                        <span class="scenario-tag">对象存储</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 2.2 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2011</div>
+                <div class="timeline-content">
+                    <h3>🔧 Redis 2.2 - 持久化改进</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：2.2</span>
+                        <span class="version-date">2011 年 9 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>AOF（Append Only File）持久化机制</li>
+                        <li>新增有序集合（Sorted Set）数据类型</li>
+                        <li>支持主从复制</li>
+                        <li>新增 Lua 脚本支持</li>
+                        <li>改进的内存管理</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">排行榜</span>
+                        <span class="scenario-tag">数据持久化</span>
+                        <span class="scenario-tag">主从备份</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 2.4 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2012</div>
+                <div class="timeline-content">
+                    <h3>⚡ Redis 2.4 - 性能优化</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：2.4</span>
+                        <span class="version-date">2012 年 3 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>改进的 AOF 重写机制</li>
+                        <li>新增客户端输出缓冲区限制</li>
+                        <li>支持按模式取消订阅</li>
+                        <li>新增 SHUTDOWN 命令</li>
+                        <li>改进的 RDB 快照性能</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">大规模缓存</span>
+                        <span class="scenario-tag">会话管理</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 2.6 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2012</div>
+                <div class="timeline-content">
+                    <h3>📝 Redis 2.6 - Lua 脚本</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：2.6</span>
+                        <span class="version-date">2012 年 11 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>完整的 Lua 脚本引擎支持</li>
+                        <li>新增 EVAL 和 EVALSHA 命令</li>
+                        <li>支持 Redis 事务</li>
+                        <li>新增位图（Bitmap）操作</li>
+                        <li>改进的监控命令（MONITOR）</li>
+                        <li>支持脚本调试</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">复杂业务逻辑</span>
+                        <span class="scenario-tag">原子操作</span>
+                        <span class="scenario-tag">位运算</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 2.8 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2013</div>
+                <div class="timeline-content">
+                    <h3>🔔 Redis 2.8 - 哨兵模式</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：2.8</span>
+                        <span class="version-date">2013 年 10 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>Redis Sentinel（哨兵）高可用方案</li>
+                        <li>改进的复制机制（部分复制）</li>
+                        <li>事件通知系统（Keyspace Notifications）</li>
+                        <li>新增 BITCOUNT、BITPOS 命令</li>
+                        <li>支持毫秒级过期时间</li>
+                        <li>改进的内存效率</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">高可用集群</span>
+                        <span class="scenario-tag">自动故障转移</span>
+                        <span class="scenario-tag">实时监控</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 3.0 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2015</div>
+                <div class="timeline-content">
+                    <h3>🌐 Redis 3.0 - 集群模式</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：3.0</span>
+                        <span class="version-date">2015 年 4 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>Redis Cluster（集群）分布式方案</li>
+                        <li>支持数据分片（Sharding）</li>
+                        <li>新增 CLUSTER 命令集</li>
+                        <li>支持只读副本</li>
+                        <li>改进的内存分配器（Jemalloc）</li>
+                        <li>支持内嵌 Lua 调试器</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">分布式缓存</span>
+                        <span class="scenario-tag">海量数据</span>
+                        <span class="scenario-tag">水平扩展</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 3.2 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2016</div>
+                <div class="timeline-content">
+                    <h3>🛡️ Redis 3.2 - 安全加固</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：3.2</span>
+                        <span class="version-date">2016 年 6 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>增强的安全机制（Protected Mode）</li>
+                        <li>支持 Redis JSON 模块（实验性）</li>
+                        <li>新增 CLUSTER FAILOVER 命令</li>
+                        <li>支持无脚本集群管理</li>
+                        <li>改进的 RDB 格式（带辅助信息）</li>
+                        <li>新增 SWAPDB 命令</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">生产环境</span>
+                        <span class="scenario-tag">安全部署</span>
+                        <span class="scenario-tag">JSON 存储</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 4.0 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2017</div>
+                <div class="timeline-content">
+                    <h3>🔌 Redis 4.0 - 模块系统</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：4.0</span>
+                        <span class="version-date">2017 年 7 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>Redis Modules（模块）系统</li>
+                        <li>支持自定义数据类型和命令</li>
+                        <li>新增 PSYNC 命令（改进复制）</li>
+                        <li>支持惰性删除和定期删除结合</li>
+                        <li>新增 UNLINK 命令（异步删除）</li>
+                        <li>支持内存淘汰策略改进</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">功能扩展</span>
+                        <span class="scenario-tag">自定义类型</span>
+                        <span class="scenario-tag">搜索引擎</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 5.0 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2018</div>
+                <div class="timeline-content">
+                    <h3>📊 Redis 5.0 - 流数据结构</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：5.0</span>
+                        <span class="version-date">2018 年 10 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>Stream（流）数据结构</li>
+                        <li>消费者组（Consumer Groups）</li>
+                        <li>新增 XREADGROUP、XACK 等流命令</li>
+                        <li>RedisJSON 模块正式发布</li>
+                        <li>支持 TLS/SSL 加密连接</li>
+                        <li>改进的集群管理工具</li>
+                        <li>新增 ACL 访问控制（实验性）</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">消息队列</span>
+                        <span class="scenario-tag">事件溯源</span>
+                        <span class="scenario-tag">日志处理</span>
+                        <span class="scenario-tag">安全通信</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 6.0 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2020</div>
+                <div class="timeline-content">
+                    <h3>🔐 Redis 6.0 - 多线程与 ACL</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：6.0</span>
+                        <span class="version-date">2020 年 5 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>多线程 I/O（网络读写）</li>
+                        <li>完整的 ACL（访问控制列表）</li>
+                        <li>支持 SSL/TLS 加密</li>
+                        <li>新增 RESP3 协议支持</li>
+                        <li>改进的客户端缓存机制</li>
+                        <li>支持细粒度权限管理</li>
+                        <li>性能提升 3 倍（网络密集型场景）</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">高并发场景</span>
+                        <span class="scenario-tag">多用户系统</span>
+                        <span class="scenario-tag">安全敏感应用</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 7.0 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2022</div>
+                <div class="timeline-content">
+                    <h3>🚀 Redis 7.0 - 全面升级</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：7.0</span>
+                        <span class="version-date">2022 年 4 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>多线程删除（Lazy Freeing）</li>
+                        <li>函数库（Functions）替代 Lua 脚本</li>
+                        <li>集群支持多槽位迁移</li>
+                        <li>新的命令：LCOPY、LMOVE、BLMOVE</li>
+                        <li>支持只读命令路由到副本</li>
+                        <li>改进的内存效率</li>
+                        <li>新增客户端跟踪 API</li>
+                        <li>支持 ACL 类别</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">企业级应用</span>
+                        <span class="scenario-tag">复杂业务逻辑</span>
+                        <span class="scenario-tag">大规模集群</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 7.2 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2023</div>
+                <div class="timeline-content">
+                    <h3>🎯 Redis 7.2 - 性能优化</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：7.2</span>
+                        <span class="version-date">2023 年 8 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>改进的集群性能</li>
+                        <li>新增 VSS（向量搜索）功能</li>
+                        <li>支持 JSON 类型查询优化</li>
+                        <li>改进的内存碎片整理</li>
+                        <li>新增 COMMAND DOCS 命令</li>
+                        <li>支持更细粒度的配置选项</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">AI 向量搜索</span>
+                        <span class="scenario-tag">推荐系统</span>
+                        <span class="scenario-tag">相似度匹配</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Redis 7.4 -->
+            <div class="timeline-item">
+                <div class="timeline-badge">2024</div>
+                <div class="timeline-content">
+                    <h3>💡 Redis 7.4 - 智能化升级</h3>
+                    <div class="version-info">
+                        <span class="version-tag">版本：7.4</span>
+                        <span class="version-date">2024 年 7 月</span>
+                    </div>
+                    <h4>主要特性</h4>
+                    <ul>
+                        <li>键空间访问通知优化</li>
+                        <li>支持更多 JSON 操作命令</li>
+                        <li>改进的集群故障检测</li>
+                        <li>新增 CLIENT 命令选项</li>
+                        <li>支持更灵活的淘汰策略</li>
+                        <li>改进的持久化性能</li>
+                    </ul>
+                    <h4>应用场景</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">实时分析</span>
+                        <span class="scenario-tag">智能缓存</span>
+                        <span class="scenario-tag">数据同步</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Future -->
+            <div class="timeline-item future">
+                <div class="timeline-badge">未来</div>
+                <div class="timeline-content">
+                    <h3>🔮 未来展望</h3>
+                    <h4>发展方向</h4>
+                    <ul>
+                        <li>更强的 AI/ML 集成能力</li>
+                        <li>改进的云原生支持</li>
+                        <li>更丰富的数据类型</li>
+                        <li>进一步提升性能和可扩展性</li>
+                        <li>更完善的安全机制</li>
+                        <li>更好的多模数据库支持</li>
+                    </ul>
+                    <h4>潜在应用</h4>
+                    <div class="scenario-tags">
+                        <span class="scenario-tag">人工智能</span>
+                        <span class="scenario-tag">边缘计算</span>
+                        <span class="scenario-tag">物联网</span>
+                        <span class="scenario-tag">区块链</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>📊 版本对比总结</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+                    <tr style="background: #667eea; color: white;">
+                        <th style="padding: 0.75rem; border: 1px solid #ddd;">版本</th>
+                        <th style="padding: 0.75rem; border: 1px solid #ddd;">发布年份</th>
+                        <th style="padding: 0.75rem; border: 1px solid #ddd;">核心特性</th>
+                        <th style="padding: 0.75rem; border: 1px solid #ddd;">性能提升</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold;">1.x</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">2009</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">基础数据类型</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">基准</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold;">2.x</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">2010-2013</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">发布订阅、Lua 脚本、哨兵</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">2-3 倍</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold;">3.x</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">2015-2016</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">集群、安全加固</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">3-5 倍</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold;">4.x</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">2017</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">模块系统</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">5-8 倍</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold;">5.x</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">2018</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">Stream、TLS</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">8-10 倍</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold;">6.x</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">2020</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">多线程 I/O、ACL</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">10-15 倍</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd; background: #f8f9fa; font-weight: bold;">7.x</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">2022-至今</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">函数库、向量搜索</td>
+                        <td style="padding: 0.75rem; border: 1px solid #ddd;">15-20 倍</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>🎓 学习建议</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;">
+                <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #1976d2;">📖 初学者</h4>
+                    <p>从 Redis 2.x-3.x 的基础特性开始学习，掌握数据类型、持久化、主从复制等核心概念。</p>
+                </div>
+                <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #388e3c;">💼 开发者</h4>
+                    <p>重点学习 4.x-5.x 的模块系统和 Stream，了解如何扩展 Redis 功能和构建消息队列。</p>
+                </div>
+                <div style="background: #fff3e0; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #f57c00;">🔧 运维人员</h4>
+                    <p>深入学习 6.x-7.x 的集群管理、安全配置和性能调优，确保生产环境稳定运行。</p>
+                </div>
+                <div style="background: #f3e5f5; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: #7b1fa2;">🚀 架构师</h4>
+                    <p>关注最新版本的高级特性，如向量搜索、函数库等，设计高性能分布式系统架构。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* 时间线样式 */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-badge {
+            flex: 0 0 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-badge {
+            margin-right: 2rem;
+        }
+
+        .timeline-item:nth-child(even) .timeline-badge {
+            margin-left: 2rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #667eea;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            border-left: none;
+            border-right: 4px solid #764ba2;
+        }
+
+        .timeline-content h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .version-info {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .version-tag {
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+
+        .version-date {
+            background: #f8f9fa;
+            color: #666;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+
+        .timeline-content h4 {
+            color: #34495e;
+            margin: 1rem 0 0.5rem;
+            font-size: 1rem;
+        }
+
+        .timeline-content ul {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            color: #555;
+        }
+
+        .timeline-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        .scenario-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .scenario-tag {
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+        }
+
+        .timeline-item.future .timeline-badge {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .timeline-item.future .timeline-content {
+            border-left-color: #f5576c;
+        }
+
+        .timeline-item.future .scenario-tag {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+                padding-left: 60px;
+            }
+
+            .timeline-badge {
+                position: absolute;
+                left: 0;
+                flex: 0 0 40px;
+                font-size: 0.9rem;
+                padding: 0.5rem;
+            }
+
+            .timeline-content {
+                border-left: 4px solid #667eea !important;
+                border-right: none !important;
+            }
+        }
+    </style>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
