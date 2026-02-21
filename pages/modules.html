@@ -43,8 +43,8 @@
                         <p class="module-lead">强大的全文搜索引擎，支持二级索引、模糊搜索、向量相似度搜索等。</p>
                     </div>
                 </div>
-                <div class="module-detail-grid">
-                    <div class="module-detail-section">
+                <div class="module-details">
+                    <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
                             <li>全文搜索和聚合查询</li>
@@ -54,7 +54,7 @@
                             <li>自动补全建议</li>
                         </ul>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 创建索引
@@ -70,7 +70,7 @@ FT.SEARCH idx:product "@category:{electronics} @price:[0 1000]"
 FT.SEARCH idx:products "*=>[KNN 10 @vector $BLOB]" PARAMS 2 BLOB [blob]
                         </div>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Docker 方式
@@ -93,8 +93,8 @@ redis-server --loadmodule /path/to/redisearch.so
                         <p class="module-lead">原生 JSON 数据类型支持，允许在 Redis 中存储、查询和操作 JSON 文档。</p>
                     </div>
                 </div>
-                <div class="module-detail-grid">
-                    <div class="module-detail-section">
+                <div class="module-details">
+                    <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
                             <li>JSONPath 查询语法</li>
@@ -104,7 +104,7 @@ redis-server --loadmodule /path/to/redisearch.so
                             <li>Schema 验证</li>
                         </ul>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 设置 JSON 文档
@@ -124,7 +124,7 @@ JSON.ARRAPPEND user:1001 $.hobbies '"旅行"'
 JSON.DEL user:1001 $.age
                         </div>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Redis Stack 已内置
@@ -147,8 +147,8 @@ redis-server --loadmodule /path/to/rejson.so
                         <p class="module-lead">时间序列数据存储和查询模块，适用于 IoT、监控、金融等场景。</p>
                     </div>
                 </div>
-                <div class="module-detail-grid">
-                    <div class="module-detail-section">
+                <div class="module-details">
+                    <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
                             <li>高效时间序列存储</li>
@@ -158,7 +158,7 @@ redis-server --loadmodule /path/to/rejson.so
                             <li>标签索引和过滤</li>
                         </ul>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 创建时间序列
@@ -177,7 +177,7 @@ TS.MRANGE - + FILTER location=北京 AGGREGATION AVG 3600000
 TS.CREATERULE temperature:sensor:1 temperature:avg AGGREGATION AVG 3600000
                         </div>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Redis Stack 已内置
@@ -200,8 +200,8 @@ redis-server --loadmodule /path/to/redistimeseries.so
                         <p class="module-lead">图数据库模块，使用 Cypher 查询语言，支持关系数据的存储和查询。</p>
                     </div>
                 </div>
-                <div class="module-detail-grid">
-                    <div class="module-detail-section">
+                <div class="module-details">
+                    <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
                             <li>Cypher 查询语言支持</li>
@@ -211,7 +211,7 @@ redis-server --loadmodule /path/to/redistimeseries.so
                             <li>路径查找算法</li>
                         </ul>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 创建节点
@@ -227,7 +227,7 @@ GRAPH.QUERY social "MATCH (p:Person {name:'张三'})-[:FRIEND]->(f) RETURN f.nam
 GRAPH.QUERY social "MATCH (p:Person)-[:FRIEND*2..3]->(f) RETURN p.name, f.name"
                         </div>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Docker 方式
@@ -250,8 +250,8 @@ redis-server --loadmodule /path/to/redisgraph.so
                         <p class="module-lead">概率数据结构集合，包括布隆过滤器、计数布隆过滤器、Cuckoo 过滤器等。</p>
                     </div>
                 </div>
-                <div class="module-detail-grid">
-                    <div class="module-detail-section">
+                <div class="module-details">
+                    <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
                             <li>布隆过滤器（Bloom Filter）</li>
@@ -261,7 +261,7 @@ redis-server --loadmodule /path/to/redisgraph.so
                             <li>HyperLogLog 增强</li>
                         </ul>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 创建布隆过滤器
@@ -284,7 +284,7 @@ CF.ADD mycf product456
 CF.EXISTS mycf product456
                         </div>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>📥 安装方式</h4>
                         <div class="code-block">
 # Redis Stack 已内置
@@ -307,8 +307,8 @@ redis-server --loadmodule /path/to/redisbloom.so
                         <p class="module-lead">分布式限流模块，实现令牌桶算法，用于 API 限流和速率控制。</p>
                     </div>
                 </div>
-                <div class="module-detail-grid">
-                    <div class="module-detail-section">
+                <div class="module-details">
+                    <div class="module-detail-row">
                         <h4>📌 核心功能</h4>
                         <ul>
                             <li>令牌桶算法实现</li>
@@ -318,7 +318,7 @@ redis-server --loadmodule /path/to/redisbloom.so
                             <li>灵活的配置选项</li>
                         </ul>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>💻 使用示例</h4>
                         <div class="code-block">
 # 限流配置：每秒 10 个请求，桶容量 20
@@ -335,7 +335,7 @@ CL.THROTTLE user:123 10 20 1
 CL.THROTTLE user:123 10 20 1 0
                         </div>
                     </div>
-                    <div class="module-detail-section">
+                    <div class="module-detail-row">
                         <h4>📥 安装方式</h4>
                         <div class="code-block">
 # 编译安装
@@ -1023,20 +1023,25 @@ RedisModule_FreeThreadSafeContext(safeCtx);
             line-height: 1.6;
         }
 
-        .module-detail-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding: 1.5rem;
+        /* 模块详情区域 - 垂直布局 */
+        .module-details {
+            padding: 0;
         }
 
-        .module-detail-section {
+        .module-detail-row {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .module-detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .module-detail-row:nth-child(even) {
             background: #f8f9fa;
-            padding: 1.5rem;
-            border-radius: 8px;
         }
 
-        .module-detail-section h4 {
+        .module-detail-row h4 {
             color: #2c3e50;
             margin: 0 0 1rem 0;
             font-size: 1.1rem;
@@ -1045,17 +1050,17 @@ RedisModule_FreeThreadSafeContext(safeCtx);
             gap: 0.5rem;
         }
 
-        .module-detail-section ul {
+        .module-detail-row ul {
             padding-left: 1.5rem;
             color: #555;
             margin: 0;
         }
 
-        .module-detail-section li {
+        .module-detail-row li {
             margin-bottom: 0.5rem;
         }
 
-        .module-detail-section .code-block {
+        .module-detail-row .code-block {
             margin: 0;
             font-size: 0.85rem;
         }
@@ -1182,9 +1187,8 @@ RedisModule_FreeThreadSafeContext(safeCtx);
                 font-size: 1rem;
             }
 
-            .module-detail-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
+            .module-detail-row {
+                padding: 1rem 1.5rem;
             }
 
             .step {
