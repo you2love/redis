@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插件系统 - Redis 学习教程</title>
+    <meta name="description" content="Redis 插件系统介绍，知名模块和开发指南">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="../index.html" class="navbar-brand">
+                <i>🗃️</i> Redis 学习教程
+            </a>
+            <ul class="nav-menu">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="tutorial.html">基础教程</a></li>
+                <li><a href="commands.html">命令参考</a></li>
+                <li><a href="playground.html">交互演示</a></li>
+                <li><a href="history.html">发展历程</a></li>
+                <li><a href="modules.html" class="active">插件系统</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="content-section">
+            <h2>🔌 Redis 插件系统</h2>
+            <p class="lead">Redis 模块（Modules）系统允许开发者扩展 Redis 核心功能，创建自定义数据类型和命令。</p>
+        </div>
+
+        <!-- 知名插件 -->
+        <div class="content-section">
+            <h2>📦 知名 Redis 插件/模块</h2>
+            
+            <div class="module-grid">
+                <!-- RediSearch -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🔍</div>
+                        <h3>RediSearch</h3>
+                    </div>
+                    <p class="module-description">强大的全文搜索引擎，支持二级索引、模糊搜索、向量相似度搜索等。</p>
+                    <div class="module-features">
+                        <h4>核心功能</h4>
+                        <ul>
+                            <li>全文搜索和聚合查询</li>
+                            <li>向量相似度搜索（VSS）</li>
+                            <li>JSON 文档索引</li>
+                            <li>地理空间搜索</li>
+                            <li>自动补全建议</li>
+                        </ul>
+                    </div>
+                    <div class="module-usage">
+                        <h4>使用示例</h4>
+                        <div class="code-block">
+# 创建索引
+FT.CREATE idx:product ON JSON PREFIX 1 product: SCHEMA \
+  $.name AS name TEXT \
+  $.price AS price NUMERIC \
+  $.category AS category TAG
+
+# 搜索产品
+FT.SEARCH idx:product "@category:{electronics} @price:[0 1000]"
+
+# 向量搜索
+FT.SEARCH idx:products "*=>[KNN 10 @vector $BLOB]" PARAMS 2 BLOB [blob]
+                        </div>
+                    </div>
+                    <div class="module-install">
+                        <h4>安装方式</h4>
+                        <div class="code-block">
+# Docker 方式
+docker run -p 6379:6379 redis/redis-stack-server:latest
+
+# 或加载模块
+redis-server --loadmodule /path/to/redisearch.so
+                        </div>
+                        <a href="https://redis.io/docs/latest/develop/data-types/search/" target="_blank" class="module-link">官方文档 →</a>
+                    </div>
+                </div>
+
+                <!-- RedisJSON -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">📋</div>
+                        <h3>RedisJSON</h3>
+                    </div>
+                    <p class="module-description">原生 JSON 数据类型支持，允许在 Redis 中存储、查询和操作 JSON 文档。</p>
+                    <div class="module-features">
+                        <h4>核心功能</h4>
+                        <ul>
+                            <li>JSONPath 查询语法</li>
+                            <li>原子级字段操作</li>
+                            <li>支持数组操作</li>
+                            <li>与 RediSearch 集成</li>
+                            <li>Schema 验证</li>
+                        </ul>
+                    </div>
+                    <div class="module-usage">
+                        <h4>使用示例</h4>
+                        <div class="code-block">
+# 设置 JSON 文档
+JSON.SET user:1001 $ '{"name":"张三","age":30,"hobbies":["读书","游泳"]}'
+
+# 获取字段
+JSON.GET user:1001 $.name
+> ["张三"]
+
+# 更新字段
+JSON.SET user:1001 $.age 31
+
+# 数组操作
+JSON.ARRAPPEND user:1001 $.hobbies '"旅行"'
+
+# 删除字段
+JSON.DEL user:1001 $.age
+                        </div>
+                    </div>
+                    <div class="module-install">
+                        <h4>安装方式</h4>
+                        <div class="code-block">
+# Redis Stack 已内置
+docker run -p 6379:6379 redis/redis-stack-server:latest
+
+# 单独加载模块
+redis-server --loadmodule /path/to/rejson.so
+                        </div>
+                        <a href="https://redis.io/docs/latest/develop/data-types/json/" target="_blank" class="module-link">官方文档 →</a>
+                    </div>
+                </div>
+
+                <!-- RedisTimeSeries -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">📈</div>
+                        <h3>RedisTimeSeries</h3>
+                    </div>
+                    <p class="module-description">时间序列数据存储和查询模块，适用于 IoT、监控、金融等场景。</p>
+                    <div class="module-features">
+                        <h4>核心功能</h4>
+                        <ul>
+                            <li>高效时间序列存储</li>
+                            <li>自动降采样（Downsampling）</li>
+                            <li>聚合查询（AVG、SUM、MAX 等）</li>
+                            <li>数据保留策略</li>
+                            <li>标签索引和过滤</li>
+                        </ul>
+                    </div>
+                    <div class="module-usage">
+                        <h4>使用示例</h4>
+                        <div class="code-block">
+# 创建时间序列
+TS.CREATE temperature:sensor:1 RETENTION 86400000 LABELS sensor_id 1 location 北京
+
+# 添加数据点
+TS.ADD temperature:sensor:1 * 25.5 LABELS sensor_id 1
+
+# 范围查询
+TS.RANGE temperature:sensor:1 - + AGGREGATION AVG 3600000
+
+# 多序列查询
+TS.MRANGE - + FILTER location=北京 AGGREGATION AVG 3600000
+
+# 创建降采样规则
+TS.CREATERULE temperature:sensor:1 temperature:avg AGGREGATION AVG 3600000
+                        </div>
+                    </div>
+                    <div class="module-install">
+                        <h4>安装方式</h4>
+                        <div class="code-block">
+# Redis Stack 已内置
+docker run -p 6379:6379 redis/redis-stack-server:latest
+
+# 单独加载模块
+redis-server --loadmodule /path/to/redistimeseries.so
+                        </div>
+                        <a href="https://redis.io/docs/latest/develop/data-types/timeseries/" target="_blank" class="module-link">官方文档 →</a>
+                    </div>
+                </div>
+
+                <!-- RedisGraph -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🕸️</div>
+                        <h3>RedisGraph</h3>
+                    </div>
+                    <p class="module-description">图数据库模块，使用 Cypher 查询语言，支持关系数据的存储和查询。</p>
+                    <div class="module-features">
+                        <h4>核心功能</h4>
+                        <ul>
+                            <li>Cypher 查询语言支持</li>
+                            <li>属性图模型</li>
+                            <li>矩阵乘法优化</li>
+                            <li>关系遍历查询</li>
+                            <li>路径查找算法</li>
+                        </ul>
+                    </div>
+                    <div class="module-usage">
+                        <h4>使用示例</h4>
+                        <div class="code-block">
+# 创建节点
+GRAPH.QUERY social "CREATE (:Person {name:'张三', age:30})"
+
+# 创建关系
+GRAPH.QUERY social "MATCH (a:Person {name:'张三'}), (b:Person {name:'李四'}) CREATE (a)-[:FRIEND]->(b)"
+
+# 查询朋友
+GRAPH.QUERY social "MATCH (p:Person {name:'张三'})-[:FRIEND]->(f) RETURN f.name"
+
+# 复杂查询
+GRAPH.QUERY social "MATCH (p:Person)-[:FRIEND*2..3]->(f) RETURN p.name, f.name"
+                        </div>
+                    </div>
+                    <div class="module-install">
+                        <h4>安装方式</h4>
+                        <div class="code-block">
+# Docker 方式
+docker run -p 6379:6379 redisgraph/redisgraph
+
+# 加载模块
+redis-server --loadmodule /path/to/redisgraph.so
+                        </div>
+                        <a href="https://redis.io/docs/latest/develop/data-types/graph/" target="_blank" class="module-link">官方文档 →</a>
+                    </div>
+                </div>
+
+                <!-- RedisBloom -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">🌺</div>
+                        <h3>RedisBloom</h3>
+                    </div>
+                    <p class="module-description">概率数据结构集合，包括布隆过滤器、计数布隆过滤器、Cuckoo 过滤器等。</p>
+                    <div class="module-features">
+                        <h4>核心功能</h4>
+                        <ul>
+                            <li>布隆过滤器（Bloom Filter）</li>
+                            <li>计数布隆过滤器</li>
+                            <li>Cuckoo 过滤器</li>
+                            <li>Top-K 算法</li>
+                            <li>HyperLogLog 增强</li>
+                        </ul>
+                    </div>
+                    <div class="module-usage">
+                        <h4>使用示例</h4>
+                        <div class="code-block">
+# 创建布隆过滤器
+BF.RESERVE mybloom 0.01 1000
+
+# 添加元素
+BF.ADD mybloom user123
+
+# 检查元素是否存在
+BF.EXISTS mybloom user123
+> 1 (可能存在)
+
+# Top-K 统计
+TOPK.ADD mytopk item1 item2 item3
+TOPK.LIST mytopk
+> ["item1", "item2", "item3"]
+
+# Cuckoo 过滤器
+CF.ADD mycf product456
+CF.EXISTS mycf product456
+                        </div>
+                    </div>
+                    <div class="module-install">
+                        <h4>安装方式</h4>
+                        <div class="code-block">
+# Redis Stack 已内置
+docker run -p 6379:6379 redis/redis-stack-server:latest
+
+# 单独加载模块
+redis-server --loadmodule /path/to/redisbloom.so
+                        </div>
+                        <a href="https://redis.io/docs/latest/develop/data-types/probabilistic/" target="_blank" class="module-link">官方文档 →</a>
+                    </div>
+                </div>
+
+                <!-- RedisCell -->
+                <div class="module-card">
+                    <div class="module-header">
+                        <div class="module-icon">⚡</div>
+                        <h3>RedisCell</h3>
+                    </div>
+                    <p class="module-description">分布式限流模块，实现令牌桶算法，用于 API 限流和速率控制。</p>
+                    <div class="module-features">
+                        <h4>核心功能</h4>
+                        <ul>
+                            <li>令牌桶算法实现</li>
+                            <li>分布式限流</li>
+                            <li>精确的速率控制</li>
+                            <li>原子操作保证</li>
+                            <li>灵活的配置选项</li>
+                        </ul>
+                    </div>
+                    <div class="module-usage">
+                        <h4>使用示例</h4>
+                        <div class="code-block">
+# 限流配置：每秒 10 个请求，桶容量 20
+CL.THROTTLE user:123 10 20 1
+
+# 返回值：[是否允许，剩余容量，重置时间，重试延迟]
+> [0, 19, 20, 0]  # 允许
+
+# 超过限制
+CL.THROTTLE user:123 10 20 1
+> [1, 0, 20, 1]   # 拒绝，1 秒后重试
+
+# 检查当前状态
+CL.THROTTLE user:123 10 20 1 0
+                        </div>
+                    </div>
+                    <div class="module-install">
+                        <h4>安装方式</h4>
+                        <div class="code-block">
+# 编译安装
+git clone https://github.com/brandur/redis-cell
+cd redis-cell
+cargo build --release
+
+# 加载模块
+redis-server --loadmodule target/release/libredis_cell.so
+                        </div>
+                        <a href="https://github.com/brandur/redis-cell" target="_blank" class="module-link">GitHub →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 模块开发指南 -->
+        <div class="content-section">
+            <h2>🛠️ 模块开发指南</h2>
+            
+            <div class="tutorial-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>环境准备</h3>
+                        <div class="step-details">
+                            <h4>安装开发工具</h4>
+                            <div class="code-block">
+# Ubuntu/Debian
+sudo apt-get install build-essential autoconf automake libtool
+
+# macOS
+xcode-select --install
+brew install autoconf automake libtool
+
+# 安装 Redis 源码（获取头文件）
+git clone https://github.com/redis/redis.git
+cd redis
+make
+                            </div>
+                            <h4>项目结构</h4>
+                            <div class="code-block">
+my-module/
+├── src/
+│   └── mymodule.c      # 模块源代码
+├── Makefile            # 构建配置
+├── README.md           # 说明文档
+└── tests/              # 测试文件
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>创建第一个模块</h3>
+                        <div class="step-details">
+                            <h4>基础模块模板</h4>
+                            <div class="code-block">
+#include "redismodule.h"
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+// 命令实现：HELLO.WORLD
+int HelloWorld_RedisCommand(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
+    // 检查参数数量
+    if (argc != 1) {
+        return RedisModule_WrongArity(ctx);
+    }
+    
+    // 返回简单字符串
+    RedisModule_ReplyWithSimpleString(ctx, "Hello, Redis Module World!");
+    return REDISMODULE_OK;
+}
+
+// 命令实现：HELLO.ECHO &lt;message&gt;
+int HelloEcho_RedisCommand(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
+    if (argc != 2) {
+        return RedisModule_WrongArity(ctx);
+    }
+    
+    // 返回传入的消息
+    RedisModule_ReplyWithString(ctx, argv[1]);
+    return REDISMODULE_OK;
+}
+
+// 模块加载入口
+int RedisModule_OnLoad(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
+    // 初始化模块 API
+    if (RedisModule_Init(ctx, "hello", 1, REDISMODULE_APIVER_1) == REDISMODULE_ERR) {
+        return REDISMODULE_ERR;
+    }
+    
+    // 注册命令
+    if (RedisModule_CreateCommand(ctx, "hello.world", HelloWorld_RedisCommand, 
+                                   "readonly", 0, 0, 0) == REDISMODULE_ERR) {
+        return REDISMODULE_ERR;
+    }
+    
+    if (RedisModule_CreateCommand(ctx, "hello.echo", HelloEcho_RedisCommand, 
+                                   "readonly", 0, 0, 0) == REDISMODULE_ERR) {
+        return REDISMODULE_ERR;
+    }
+    
+    return REDISMODULE_OK;
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>编译模块</h3>
+                        <div class="step-details">
+                            <h4>Makefile 配置</h4>
+                            <div class="code-block">
+# Makefile
+MODULE_NAME = hello
+MODULE_TARGET = $(MODULE_NAME).so
+
+# Redis 源码路径
+REDIS_SRC = ../redis/src
+
+# 编译器设置
+CC = gcc
+CFLAGS = -fPIC -O2 -I$(REDIS_SRC)
+LDFLAGS = -shared
+
+# 源文件
+SRCS = src/mymodule.c
+
+# 默认目标
+all: $(MODULE_TARGET)
+
+# 编译模块
+$(MODULE_TARGET): $(SRCS)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+
+# 清理
+clean:
+	rm -f $(MODULE_TARGET)
+
+# 安装
+install: $(MODULE_TARGET)
+	cp $(MODULE_TARGET) /usr/local/lib/redis/modules/
+
+.PHONY: all clean install
+                            </div>
+                            <h4>编译命令</h4>
+                            <div class="code-block">
+# 编译模块
+make
+
+# 输出：hello.so
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>加载和测试</h3>
+                        <div class="step-details">
+                            <h4>启动 Redis 并加载模块</h4>
+                            <div class="code-block">
+# 方式 1：启动时加载
+redis-server --loadmodule ./hello.so
+
+# 方式 2：运行时动态加载
+redis-cli
+127.0.0.1:6379&gt; MODULE LOAD ./hello.so
+OK
+
+# 方式 3：使用配置文件
+# 在 redis.conf 中添加：
+# loadmodule /path/to/hello.so
+redis-server redis.conf
+                            </div>
+                            <h4>测试命令</h4>
+                            <div class="code-block">
+# 测试命令
+127.0.0.1:6379&gt; HELLO.WORLD
+"Hello, Redis Module World!"
+
+127.0.0.1:6379&gt; HELLO.ECHO "测试消息"
+"测试消息"
+
+# 查看模块信息
+127.0.0.1:6379&gt; MODULE LIST
+1) 1) "name"
+   2) "hello"
+   3) "ver"
+   4) (integer) 1
+
+# 卸载模块
+127.0.0.1:6379&gt; MODULE UNLOAD hello
+OK
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>创建自定义数据类型</h3>
+                        <div class="step-details">
+                            <h4>自定义类型示例：计数器</h4>
+                            <div class="code-block">
+#include "redismodule.h"
+#include &lt;stdlib.h&gt;
+
+// 自定义数据类型结构
+typedef struct {
+    long long value;
+    long long timestamp;
+} CounterObject;
+
+// 全局类型引用
+RedisModuleType *CounterType;
+
+// 创建对象
+CounterObject *createCounterObject(long long initialValue) {
+    CounterObject *co = RedisModule_Alloc(sizeof(CounterObject));
+    co-&gt;value = initialValue;
+    co-&gt;timestamp = time(NULL);
+    return co;
+}
+
+// RDB 序列化（持久化）
+void counterRDBSave(RedisModuleIO *rdb, void *value) {
+    CounterObject *co = value;
+    RedisModule_SaveSigned(rdb, co-&gt;value);
+    RedisModule_SaveSigned(rdb, co-&gt;timestamp);
+}
+
+// RDB 反序列化（加载）
+void *counterRDBLoad(RedisModuleIO *rdb, int encver) {
+    if (encver != 0) {
+        return NULL;
+    }
+    CounterObject *co = RedisModule_Alloc(sizeof(CounterObject));
+    co-&gt;value = RedisModule_LoadSigned(rdb);
+    co-&gt;timestamp = RedisModule_LoadSigned(rdb);
+    return co;
+}
+
+// AOF 重写
+void counterAOFRewrite(RedisModuleIO *aof, RedisModuleString *key, void *value) {
+    CounterObject *co = value;
+    RedisModule_EmitAOF(aof, "COUNTER.SET", "sls", key, co-&gt;value);
+}
+
+// 内存使用统计
+size_t counterMemUsage(const void *value) {
+    return sizeof(CounterObject);
+}
+
+// 释放对象
+void counterFree(void *value) {
+    RedisModule_Free(value);
+}
+
+// COUNTER.CREATE &lt;key&gt; [initial_value]
+int CounterCreate_RedisCommand(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
+    if (argc &lt; 2 || argc &gt; 3) {
+        return RedisModule_WrongArity(ctx);
+    }
+    
+    long long initialValue = 0;
+    if (argc == 3) {
+        if (RedisModule_StringToLongLong(argv[2], &amp;initialValue) != REDISMODULE_OK) {
+            RedisModule_ReplyWithError(ctx, "ERR invalid initial value");
+            return REDISMODULE_ERR;
+        }
+    }
+    
+    RedisModuleKey *key = RedisModule_OpenKey(ctx, argv[1], REDISMODULE_WRITE);
+    
+    if (RedisModule_KeyType(key) != REDISMODULE_KEYTYPE_EMPTY) {
+        RedisModule_ReplyWithError(ctx, "ERR key already exists");
+        return REDISMODULE_ERR;
+    }
+    
+    CounterObject *co = createCounterObject(initialValue);
+    RedisModule_ModuleTypeSetValue(key, CounterType, co);
+    
+    RedisModule_ReplyWithSimpleString(ctx, "OK");
+    return REDISMODULE_OK;
+}
+
+// COUNTER.GET &lt;key&gt;
+int CounterGet_RedisCommand(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
+    if (argc != 2) {
+        return RedisModule_WrongArity(ctx);
+    }
+    
+    RedisModuleKey *key = RedisModule_OpenKey(ctx, argv[1], REDISMODULE_READ);
+    
+    if (RedisModule_KeyType(key) == REDISMODULE_KEYTYPE_EMPTY) {
+        RedisModule_ReplyWithError(ctx, "ERR no such key");
+        return REDISMODULE_ERR;
+    }
+    
+    if (RedisModule_ModuleTypeGetType(key) != CounterType) {
+        RedisModule_ReplyWithError(ctx, "ERR wrong type");
+        return REDISMODULE_ERR;
+    }
+    
+    CounterObject *co = RedisModule_ModuleTypeGetValue(key);
+    RedisModule_ReplyWithLongLong(ctx, co-&gt;value);
+    return REDISMODULE_OK;
+}
+
+// COUNTER.INCR &lt;key&gt; [by]
+int CounterIncr_RedisCommand(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
+    if (argc &lt; 2 || argc &gt; 3) {
+        return RedisModule_WrongArity(ctx);
+    }
+    
+    long long increment = 1;
+    if (argc == 3) {
+        if (RedisModule_StringToLongLong(argv[2], &amp;increment) != REDISMODULE_OK) {
+            RedisModule_ReplyWithError(ctx, "ERR invalid increment");
+            return REDISMODULE_ERR;
+        }
+    }
+    
+    RedisModuleKey *key = RedisModule_OpenKey(ctx, argv[1], REDISMODULE_WRITE);
+    
+    if (RedisModule_KeyType(key) == REDISMODULE_KEYTYPE_EMPTY) {
+        RedisModule_ReplyWithError(ctx, "ERR no such key");
+        return REDISMODULE_ERR;
+    }
+    
+    if (RedisModule_ModuleTypeGetType(key) != CounterType) {
+        RedisModule_ReplyWithError(ctx, "ERR wrong type");
+        return REDISMODULE_ERR;
+    }
+    
+    CounterObject *co = RedisModule_ModuleTypeGetValue(key);
+    co-&gt;value += increment;
+    
+    RedisModule_ReplyWithLongLong(ctx, co-&gt;value);
+    return REDISMODULE_OK;
+}
+
+// 模块加载入口
+int RedisModule_OnLoad(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) {
+    if (RedisModule_Init(ctx, "counter", 1, REDISMODULE_APIVER_1) == REDISMODULE_ERR) {
+        return REDISMODULE_ERR;
+    }
+    
+    // 注册数据类型
+    RedisModuleTypeMethods tm = {
+        .version = REDISMODULE_TYPE_METHOD_VERSION,
+        .rdb_load = counterRDBLoad,
+        .rdb_save = counterRDBSave,
+        .aof_rewrite = counterAOFRewrite,
+        .free = counterFree,
+        .mem_usage = counterMemUsage
+    };
+    
+    CounterType = RedisModule_CreateDataType(ctx, "counter_t", 0, &amp;tm);
+    if (CounterType == NULL) {
+        return REDISMODULE_ERR;
+    }
+    
+    // 注册命令
+    if (RedisModule_CreateCommand(ctx, "counter.create", CounterCreate_RedisCommand, 
+                                   "write deny-oom", 0, 0, 0) == REDISMODULE_ERR) return REDISMODULE_ERR;
+    if (RedisModule_CreateCommand(ctx, "counter.get", CounterGet_RedisCommand, 
+                                   "readonly", 0, 0, 0) == REDISMODULE_ERR) return REDISMODULE_ERR;
+    if (RedisModule_CreateCommand(ctx, "counter.incr", CounterIncr_RedisCommand, 
+                                   "write", 0, 0, 0) == REDISMODULE_ERR) return REDISMODULE_ERR;
+    
+    return REDISMODULE_OK;
+}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div class="step-content">
+                        <h3>高级特性</h3>
+                        <div class="step-details">
+                            <h4>使用 Redis 键空间通知</h4>
+                            <div class="code-block">
+// 订阅键空间事件
+int RedisModule_OnLoad(RedisModuleCtx *ctx, ...) {
+    // 订阅过期事件
+    if (RedisModule_SubscribeToKeyspaceEvents(ctx, 
+        REDISMODULE_NOTIFY_EXPIRED | REDISMODULE_NOTIFY_SET, 
+        keySpaceNotification) == REDISMODULE_ERR) {
+        return REDISMODULE_ERR;
+    }
+    return REDISMODULE_OK;
+}
+
+void keySpaceNotification(RedisModuleCtx *ctx, int type, const char *event, 
+                          RedisModuleString *key) {
+    RedisModule_Log(ctx, "notice", "Keyspace event: %s on key %s", event, 
+                    RedisModule_StringPtrLen(key, NULL));
+}
+                            </div>
+                            
+                            <h4>使用定时器</h4>
+                            <div class="code-block">
+// 创建定时器
+RedisModuleTimerID timerId;
+
+void timerHandler(RedisModuleCtx *ctx, void *data) {
+    RedisModule_Log(ctx, "notice", "Timer fired!");
+    // 重新注册定时器
+    timerId = RedisModule_CreateTimer(ctx, 1000, timerHandler, NULL);
+}
+
+// 在模块加载时启动定时器
+int RedisModule_OnLoad(...) {
+    timerId = RedisModule_CreateTimer(ctx, 1000, timerHandler, NULL);
+    return REDISMODULE_OK;
+}
+                            </div>
+                            
+                            <h4>线程安全上下文</h4>
+                            <div class="code-block">
+// 获取线程安全上下文
+RedisModuleThreadSafeContext *safeCtx = RedisModule_GetThreadSafeContext(NULL);
+
+// 在后台线程中使用
+void *backgroundTask(void *arg) {
+    RedisModule_ThreadSafeContextLock(safeCtx);
+    // 执行 Redis 操作
+    RedisModule_ThreadSafeContextUnlock(safeCtx);
+    return NULL;
+}
+
+// 释放上下文
+RedisModule_FreeThreadSafeContext(safeCtx);
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 常用 API 参考 -->
+        <div class="content-section">
+            <h2>📚 常用模块 API 参考</h2>
+            
+            <div class="api-table-container">
+                <table class="api-table">
+                    <thead>
+                        <tr>
+                            <th>API 函数</th>
+                            <th>说明</th>
+                            <th>示例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>RedisModule_Init</code></td>
+                            <td>初始化模块 API</td>
+                            <td><code>RedisModule_Init(ctx, "mymodule", 1, REDISMODULE_APIVER_1)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_CreateCommand</code></td>
+                            <td>注册 Redis 命令</td>
+                            <td><code>RedisModule_CreateCommand(ctx, "cmd.name", cmdFunc, "write", 0, 0, 0)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_ReplyWithSimpleString</code></td>
+                            <td>返回简单字符串</td>
+                            <td><code>RedisModule_ReplyWithSimpleString(ctx, "OK")</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_ReplyWithLongLong</code></td>
+                            <td>返回整数</td>
+                            <td><code>RedisModule_ReplyWithLongLong(ctx, 12345)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_ReplyWithString</code></td>
+                            <td>返回 Redis 字符串</td>
+                            <td><code>RedisModule_ReplyWithString(ctx, argv[1])</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_OpenKey</code></td>
+                            <td>打开键进行操作</td>
+                            <td><code>RedisModule_OpenKey(ctx, key, REDISMODULE_WRITE)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_ModuleTypeSetValue</code></td>
+                            <td>设置模块类型值</td>
+                            <td><code>RedisModule_ModuleTypeSetValue(key, type, value)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_CreateDataType</code></td>
+                            <td>创建自定义数据类型</td>
+                            <td><code>RedisModule_CreateDataType(ctx, "type_name", 0, &amp;tm)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_Alloc</code></td>
+                            <td>分配内存（Redis 托管）</td>
+                            <td><code>RedisModule_Alloc(sizeof(MyStruct))</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_Free</code></td>
+                            <td>释放内存</td>
+                            <td><code>RedisModule_Free(ptr)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_StringToLongLong</code></td>
+                            <td>字符串转整数</td>
+                            <td><code>RedisModule_StringToLongLong(str, &amp;value)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_CreateStringFromString</code></td>
+                            <td>创建字符串副本</td>
+                            <td><code>RedisModule_CreateStringFromString(ctx, src)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_Replicate</code></td>
+                            <td>复制命令到副本</td>
+                            <td><code>RedisModule_Replicate(ctx, "cmd", "args", ...)</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_Log</code></td>
+                            <td>记录日志</td>
+                            <td><code>RedisModule_Log(ctx, "warning", "Error message")</code></td>
+                        </tr>
+                        <tr>
+                            <td><code>RedisModule_WrongArity</code></td>
+                            <td>返回参数错误</td>
+                            <td><code>RedisModule_WrongArity(ctx)</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 最佳实践 -->
+        <div class="content-section">
+            <h2>💡 最佳实践</h2>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #27ae60;">
+                    <h4 style="color: #27ae60;">✅ 内存管理</h4>
+                    <ul>
+                        <li>使用 <code>RedisModule_Alloc</code> 而非 <code>malloc</code></li>
+                        <li>及时释放不再使用的内存</li>
+                        <li>实现 <code>mem_usage</code> 回调报告内存使用</li>
+                        <li>避免内存泄漏</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #1976d2;">
+                    <h4 style="color: #1976d2;">✅ 错误处理</h4>
+                    <ul>
+                        <li>始终检查 API 返回值</li>
+                        <li>使用 <code>RedisModule_ReplyWithError</code> 报告错误</li>
+                        <li>提供清晰的错误信息</li>
+                        <li>处理边界情况</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #fff3e0; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #f39c12;">
+                    <h4 style="color: #f39c12;">✅ 性能优化</h4>
+                    <ul>
+                        <li>避免在命令中执行耗时操作</li>
+                        <li>使用后台线程处理重任务</li>
+                        <li>合理使用数据结构</li>
+                        <li>减少不必要的内存分配</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #f3e5f5; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #7b1fa2;">
+                    <h4 style="color: #7b1fa2;">✅ 线程安全</h4>
+                    <ul>
+                        <li>主线程中执行 Redis 操作</li>
+                        <li>使用 <code>ThreadSafeContext</code> 进行后台操作</li>
+                        <li>正确加锁和解锁</li>
+                        <li>避免死锁</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #ffebee; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #e53935;">
+                    <h4 style="color: #e53935;">❌ 避免事项</h4>
+                    <ul>
+                        <li>不要阻塞主线程</li>
+                        <li>不要使用标准 C 库分配器</li>
+                        <li>不要直接访问 Redis 内部结构</li>
+                        <li>不要忽略错误返回值</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #eceff1; padding: 1.5rem; border-radius: 8px; border-left: 4px solid #546e7a;">
+                    <h4 style="color: #546e7a;">📝 测试建议</h4>
+                    <ul>
+                        <li>编写单元测试覆盖所有命令</li>
+                        <li>测试持久化和 AOF 重写</li>
+                        <li>进行内存泄漏检测</li>
+                        <li>压力测试验证稳定性</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 学习资源 -->
+        <div class="content-section">
+            <h2>📖 学习资源</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4>📄 官方文档</h4>
+                    <p><a href="https://redis.io/docs/latest/develop/reference/modules/" target="_blank">Redis Modules API 文档</a></p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4>💻 示例代码</h4>
+                    <p><a href="https://github.com/redis/redis/tree/unstable/modules" target="_blank">Redis 官方模块示例</a></p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4>📦 Redis Stack</h4>
+                    <p><a href="https://redis.io/docs/latest/develop/connect/clients/python/" target="_blank">Redis Stack 文档</a></p>
+                </div>
+                <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                    <h4>🔧 开发工具</h4>
+                    <p><a href="https://github.com/RedisLabsModules/redismodule-rs" target="_blank">Rust 模块开发框架</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* 模块卡片网格 */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .module-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid #e0e0e0;
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .module-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .module-icon {
+            font-size: 2.5rem;
+        }
+
+        .module-header h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .module-description {
+            padding: 1rem 1.5rem;
+            color: #666;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .module-features,
+        .module-usage,
+        .module-install {
+            padding: 1rem 1.5rem;
+        }
+
+        .module-features h4,
+        .module-usage h4,
+        .module-install h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .module-features ul {
+            padding-left: 1.5rem;
+            color: #555;
+        }
+
+        .module-features li {
+            margin-bottom: 0.3rem;
+        }
+
+        .module-install {
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .module-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .module-link:hover {
+            text-decoration: underline;
+        }
+
+        /* 教程步骤 */
+        .tutorial-steps {
+            margin-top: 1.5rem;
+        }
+
+        .step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            flex: 0 0 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .step-details h4 {
+            color: #34495e;
+            margin: 1rem 0 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* API 表格 */
+        .api-table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .api-table thead {
+            background: #667eea;
+            color: white;
+        }
+
+        .api-table th,
+        .api-table td {
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+        }
+
+        .api-table th {
+            font-weight: 600;
+        }
+
+        .api-table tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .api-table tbody tr:hover {
+            background: #e3f2fd;
+        }
+
+        .api-table code {
+            background: #f8f9fa;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            color: #e83e8c;
+        }
+
+        @media (max-width: 768px) {
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .step-number {
+                margin-bottom: 1rem;
+            }
+
+            .api-table {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>
