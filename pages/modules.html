@@ -815,12 +815,20 @@ redis-cli
         <!-- 模块开发指南 -->
         <div class="content-section">
             <h2>🛠️ 模块开发指南</h2>
-            
+
             <div class="tutorial-steps">
                 <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>环境准备</h3>
+                    <div class="step-header step-collapsible">
+                        <div class="step-number">1</div>
+                        <div class="step-title">
+                            <h3>环境准备</h3>
+                        </div>
+                        <div class="step-toggle">
+                            <span class="toggle-icon">▼</span>
+                            <span class="toggle-text">展开</span>
+                        </div>
+                    </div>
+                    <div class="step-content module-content">
                         <div class="step-details">
                             <h4>安装开发工具</h4>
                             <div class="code-block">
@@ -850,9 +858,17 @@ my-module/
                 </div>
 
                 <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>创建第一个模块</h3>
+                    <div class="step-header step-collapsible">
+                        <div class="step-number">2</div>
+                        <div class="step-title">
+                            <h3>创建第一个模块</h3>
+                        </div>
+                        <div class="step-toggle">
+                            <span class="toggle-icon">▼</span>
+                            <span class="toggle-text">展开</span>
+                        </div>
+                    </div>
+                    <div class="step-content module-content">
                         <div class="step-details">
                             <h4>基础模块模板</h4>
                             <div class="code-block">
@@ -910,9 +926,17 @@ int RedisModule_OnLoad(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) 
                 </div>
 
                 <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>编译模块</h3>
+                    <div class="step-header step-collapsible">
+                        <div class="step-number">3</div>
+                        <div class="step-title">
+                            <h3>编译模块</h3>
+                        </div>
+                        <div class="step-toggle">
+                            <span class="toggle-icon">▼</span>
+                            <span class="toggle-text">展开</span>
+                        </div>
+                    </div>
+                    <div class="step-content module-content">
                         <div class="step-details">
                             <h4>Makefile 配置</h4>
                             <div class="code-block">
@@ -960,9 +984,17 @@ make
                 </div>
 
                 <div class="step">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h3>加载和测试</h3>
+                    <div class="step-header step-collapsible">
+                        <div class="step-number">4</div>
+                        <div class="step-title">
+                            <h3>加载和测试</h3>
+                        </div>
+                        <div class="step-toggle">
+                            <span class="toggle-icon">▼</span>
+                            <span class="toggle-text">展开</span>
+                        </div>
+                    </div>
+                    <div class="step-content module-content">
                         <div class="step-details">
                             <h4>启动 Redis 并加载模块</h4>
                             <div class="code-block">
@@ -1004,9 +1036,17 @@ OK
                 </div>
 
                 <div class="step">
-                    <div class="step-number">5</div>
-                    <div class="step-content">
-                        <h3>创建自定义数据类型</h3>
+                    <div class="step-header step-collapsible">
+                        <div class="step-number">5</div>
+                        <div class="step-title">
+                            <h3>创建自定义数据类型</h3>
+                        </div>
+                        <div class="step-toggle">
+                            <span class="toggle-icon">▼</span>
+                            <span class="toggle-text">展开</span>
+                        </div>
+                    </div>
+                    <div class="step-content module-content">
                         <div class="step-details">
                             <h4>自定义类型示例：计数器</h4>
                             <div class="code-block">
@@ -1185,9 +1225,17 @@ int RedisModule_OnLoad(RedisModuleCtx *ctx, RedisModuleString **argv, int argc) 
                 </div>
 
                 <div class="step">
-                    <div class="step-number">6</div>
-                    <div class="step-content">
-                        <h3>高级特性</h3>
+                    <div class="step-header step-collapsible">
+                        <div class="step-number">6</div>
+                        <div class="step-title">
+                            <h3>高级特性</h3>
+                        </div>
+                        <div class="step-toggle">
+                            <span class="toggle-icon">▼</span>
+                            <span class="toggle-text">展开</span>
+                        </div>
+                    </div>
+                    <div class="step-content module-content">
                         <div class="step-details">
                             <h4>使用 Redis 键空间通知</h4>
                             <div class="code-block">
@@ -1528,13 +1576,20 @@ RedisModule_FreeThreadSafeContext(safeCtx);
         .module-content {
             max-height: 5000px;
             overflow: hidden;
-            transition: max-height 0.5s ease-out, opacity 0.3s ease;
+            transition: max-height 0.5s ease-out, opacity 0.3s ease, padding 0.3s ease;
             opacity: 1;
         }
 
         .module-item.collapsed .module-content {
             max-height: 0;
             opacity: 0;
+            padding: 0;
+        }
+
+        .step.collapsed .module-content {
+            max-height: 0;
+            opacity: 0;
+            padding: 0 !important;
         }
 
         /* 模块详情区域 - 垂直布局 */
@@ -1599,21 +1654,34 @@ RedisModule_FreeThreadSafeContext(safeCtx);
         }
 
         .step {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #e0e0e0;
+            display: block;
+            margin-bottom: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+            overflow: hidden;
         }
 
-        .step:last-child {
-            border-bottom: none;
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-header:hover {
+            background: linear-gradient(135deg, #229954 0%, #28b463 100%);
         }
 
         .step-number {
             flex: 0 0 50px;
             height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: rgba(255,255,255,0.2);
             color: white;
             border-radius: 50%;
             display: flex;
@@ -1624,13 +1692,55 @@ RedisModule_FreeThreadSafeContext(safeCtx);
             flex-shrink: 0;
         }
 
-        .step-content {
+        .step-title {
             flex: 1;
         }
 
+        .step-title h3 {
+            color: white;
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .step-toggle {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            color: white;
+            font-size: 0.85rem;
+            opacity: 0.9;
+            transition: transform 0.3s ease;
+            min-width: 50px;
+        }
+
+        .step .toggle-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .step.collapsed .toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .step.collapsed .step-toggle .toggle-text::after {
+            content: '展开';
+        }
+
+        .step:not(.collapsed) .step-toggle .toggle-text::after {
+            content: '收起';
+        }
+
+        .step-content {
+            padding: 1.5rem;
+        }
+
+        .step.collapsed .step-content {
+            padding: 0 !important;
+        }
+
         .step-content h3 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
+            display: none;
         }
 
         .step-details h4 {
@@ -1719,13 +1829,36 @@ RedisModule_FreeThreadSafeContext(safeCtx);
                 padding: 1rem 1.5rem;
             }
 
-            .step {
-                flex-direction: column;
-                align-items: flex-start;
+            /* 步骤响应式 */
+            .step-header {
+                flex-wrap: wrap;
+                padding: 1rem;
             }
 
             .step-number {
-                margin-bottom: 1rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .step-title h3 {
+                font-size: 1.1rem;
+            }
+
+            .step-toggle {
+                flex-direction: row;
+                gap: 0.5rem;
+                margin-top: 0.5rem;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .step .toggle-icon {
+                font-size: 1rem;
+            }
+
+            .step-content {
+                padding: 0 1rem 1rem 1rem;
             }
 
             .api-table {
@@ -1737,21 +1870,34 @@ RedisModule_FreeThreadSafeContext(safeCtx);
     <script>
         // 模块折叠功能
         document.addEventListener('DOMContentLoaded', function() {
-            const collapsibleHeaders = document.querySelectorAll('.module-collapsible');
+            // 模块折叠
+            const moduleCollapsibleHeaders = document.querySelectorAll('.module-collapsible');
             
-            collapsibleHeaders.forEach(header => {
+            moduleCollapsibleHeaders.forEach(header => {
                 header.addEventListener('click', function(e) {
-                    e.preventDefault();
+                    e.stopPropagation();
                     const moduleItem = this.closest('.module-item');
                     moduleItem.classList.toggle('collapsed');
                 });
             });
             
-            // 初始状态：全部展开（可选：改为全部收起）
+            // 步骤折叠
+            const stepCollapsibleHeaders = document.querySelectorAll('.step-collapsible');
+            
+            stepCollapsibleHeaders.forEach(header => {
+                header.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const stepItem = this.closest('.step');
+                    stepItem.classList.toggle('collapsed');
+                });
+            });
+            
+            // 初始状态：全部展开（可选：改为默认全部收起）
             // 如果要默认全部收起，取消下面注释
-            // collapsibleHeaders.forEach(header => {
-            //     const moduleItem = header.closest('.module-item');
-            //     moduleItem.classList.add('collapsed');
+            // const allCollapsible = document.querySelectorAll('.module-collapsible, .step-collapsible');
+            // allCollapsible.forEach(header => {
+            //     const item = header.closest('.module-item, .step');
+            //     item.classList.add('collapsed');
             // });
         });
     </script>
